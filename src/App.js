@@ -1,24 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import Navbar from "./Compontents/Navbar";
+import Footer from "./Compontents/footer";
+import HomePage from "./Pages/HomePage";
+import AboutPage from "./Pages/Aboutpage";
+import NotFoundPage from "./Pages/404page";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LatestTransaction from "./Pages/Latest-transaction";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/about" element={<AboutPage />} />
+        {/* <Route path="/mining" element={<MiningPage />} />
+        <Route path="/wallet" element={<WalletPage />} /> */}
+        <Route path="/transaction" element={<LatestTransaction />} />
+
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+      <Footer />
+    </Router>
   );
 }
 

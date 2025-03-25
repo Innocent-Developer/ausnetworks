@@ -1,4 +1,27 @@
 import React, { useState, useEffect } from "react";
+import { Line, Bar } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+} from 'chart.js';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const LatestTransaction = () => {
   const [transactions, setTransactions] = useState([]);
@@ -66,6 +89,59 @@ const LatestTransaction = () => {
     }
   };
 
+  const prepareChartData = () => {
+    // Group transactions by date
+    const groupedByDate = transactions.reduce((acc, tx) => {
+      const date = tx.date.split('T')[0];
+      acc[date] = (acc[date] || 0) + 1;
+      return acc;
+    }, {});
+
+    const dates = Object.keys(groupedByDate).sort();
+    const counts = dates.map(date => groupedByDate[date]);
+
+    return {
+      labels: dates,
+      datasets: [
+        {
+          label: 'Number of Transactions',
+          data: counts,
+          fill: false,
+          borderColor: 'rgb(99, 102, 241)',
+          backgroundColor: 'rgba(99, 102, 241, 0.5)',
+          tension: 0.1
+        }
+      ]
+    };
+  };
+
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+        labels: {
+          color: 'white'
+        }
+      },
+      title: {
+        display: true,
+        text: 'Transaction Volume Over Time',
+        color: 'white'
+      }
+    },
+    scales: {
+      y: {
+        ticks: { color: 'white' },
+        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+      },
+      x: {
+        ticks: { color: 'white' },
+        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+      }
+    }
+  };
+
   const indexOfLastTransaction = currentPage * transactionsPerPage;
   const indexOfFirstTransaction = indexOfLastTransaction - transactionsPerPage;
   const currentTransactions = transactions.slice(indexOfFirstTransaction, indexOfLastTransaction);
@@ -93,6 +169,46 @@ const LatestTransaction = () => {
     <div className="min-h-screen bg-gray-900 py-8 sm:py-12 px-2 sm:px-4 md:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-2xl sm:text-3xl font-bold text-white mb-6 sm:mb-8 text-center sm:text-left">Latest Transactions</h1>
+
+        {/* Transaction Analytics */}
+        {!searchResult && transactions.length > 0 && (
+          <div className="mb-8 bg-gray-800 rounded-lg p-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <div className="bg-gray-700 rounded-lg p-4">
+                <h3 className="text-white text-lg font-semibold mb-2">Transaction Volume</h3>
+                <Line data={prepareChartData()} options={chartOptions} />
+              </div>
+              <div className="bg-gray-700 rounded-lg p-4">
+                <h3 className="text-white text-lg font-semibold mb-2">Transaction Distribution</h3>
+                <Bar data={prepareChartData()} options={chartOptions} />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div className="bg-indigo-600 rounded-lg p-4">
+                <h4 className="text-white text-sm font-medium">Total Transactions</h4>
+                <p className="text-white text-2xl font-bold">{transactions.length}</p>
+              </div>
+              <div className="bg-green-600 rounded-lg p-4">
+                <h4 className="text-white text-sm font-medium">Successful</h4>
+                <p className="text-white text-2xl font-bold">
+                  {transactions.filter(tx => tx.status === 'success').length}
+                </p>
+              </div>
+              <div className="bg-red-600 rounded-lg p-4">
+                <h4 className="text-white text-sm font-medium">Failed</h4>
+                <p className="text-white text-2xl font-bold">
+                  {transactions.filter(tx => tx.status === 'failed').length}
+                </p>
+              </div>
+              <div className="bg-yellow-600 rounded-lg p-4">
+                <h4 className="text-white text-sm font-medium">Pending</h4>
+                <p className="text-white text-2xl font-bold">
+                  {transactions.filter(tx => tx.status === 'pending').length}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Search Bar */}
         <div className="mb-6 sm:mb-8">

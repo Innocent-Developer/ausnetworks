@@ -25,6 +25,7 @@ const Wallet = () => {
       setUser(userData);
       await fetchWalletData(userData.id);
       await fetchUserTransactions(userData.receiveAddress);
+      // console.log(userData.receiveAddress);
     };
     fetchUserData();
   }, []);
@@ -49,16 +50,18 @@ const Wallet = () => {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/get-user-transaction`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ receiverAddress: userId }),
+        body: JSON.stringify({ address: userId }), // Use a general 'address' field
       });
       if (!response.ok) throw new Error("Failed to fetch transactions");
       const data = await response.json();
+      console.log(userId);
+  
       setTransactions(data || []);
     } catch (error) {
       toast.error("Error fetching transactions: " + error.message);
     }
   };
-
+  
   const handleTransactionClick = (transactionId) => {
     setExpandedTransactionId(expandedTransactionId === transactionId ? null : transactionId);
   };
@@ -123,12 +126,11 @@ const Wallet = () => {
                   <span className="text-gray-700">{tx.senderAddress.substring(0, 8)}...{tx.senderAddress.slice(-6)}</span>
                   <span className={tx.transactionType === "credit" ? "text-green-600 font-semibold" : "text-red-600 font-semibold"}>
                     {tx.amount} AUSC
-                    {tx.receiverAddress === user.receiveAddress && (
+                    {tx.receiverAddress === user.receiveAddress ? (
                       <span className="ml-2 text-green-600" title="Transaction Received">
                         <FiArrowDownLeft />
                       </span>
-                    )}
-                    {tx.receiverAddress !== user.receiveAddress && (
+                    ) : (
                       <span className="ml-2 text-red-600" title="Transaction Sent">
                         <FiArrowUpRight />
                       </span>

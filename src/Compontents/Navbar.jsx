@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,24 +21,24 @@ const Navbar = () => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
-            <a href="/" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200">
+            <NavLink to="/" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200">
               Home
-            </a>
-            <a href="/about" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200">
+            </NavLink>
+            <NavLink to="/about" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200">
               About
-            </a>
-            <a href="/mining" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200">
+            </NavLink>
+            <NavLink to="/mining" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200">
               Mining
-            </a>
-            <a href="/wallet" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200">
+            </NavLink>
+            <NavLink to="/wallet" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200">
               Wallet
-            </a>
-            <a href="/transaction"  className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200">
+            </NavLink>
+            <NavLink to="/transaction"  className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200">
             Latest Transaction
-            </a>
-            <a href="/contact" className="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 transition-all duration-200">
+            </NavLink>
+            <NavLink to="/contact" className="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 transition-all duration-200">
               Contact
-            </a>
+            </NavLink>
           </div>
 
           {/* Mobile Menu Button */}
@@ -68,12 +69,12 @@ const Navbar = () => {
       {/* Sidebar Menu */}
       <div className={`fixed inset-y-0 left-0 w-64 bg-gray-900 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out md:hidden z-50`}> 
         <div className="p-5 space-y-4">
-          <a href="/" className="block text-white text-lg">Home</a>
-          <a href="/about" className="block text-white text-lg">About</a>
-          <a href="/mining" className="block text-white text-lg">Mining</a>
-          <a href="/wallet" className="block text-white text-lg">Wallet</a>
-          <a href="/transaction" className="block text-white text-lg">Latest Transaction</a>
-          <a href="/contact" className="block text-white text-lg bg-indigo-600 px-4 py-2 rounded-md">Contact</a>
+          <NavLink to="/" className="block text-white text-lg">Home</NavLink>
+          <NavLink to="/about" className="block text-white text-lg">About</NavLink>
+          <NavLink to="/mining" className="block text-white text-lg">Mining</NavLink>
+          <NavLink to="/wallet" className="block text-white text-lg">Wallet</NavLink>
+          <NavLink to="/transaction" className="block text-white text-lg">Latest Transaction</NavLink>
+          <NavLink to="/contact" className="block text-white text-lg bg-indigo-600 px-4 py-2 rounded-md">Contact</NavLink>
         </div>
       </div>
     </nav>

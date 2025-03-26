@@ -90,18 +90,20 @@ const LatestTransaction = () => {
   };
 
   const prepareChartData = () => {
-    // Group transactions by date
-    const groupedByDate = transactions.reduce((acc, tx) => {
-      const date = tx.date.split('T')[0];
-      acc[date] = (acc[date] || 0) + 1;
+    // Group transactions by day of week
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const groupedByDay = transactions.reduce((acc, tx) => {
+      const date = new Date(tx.date);
+      const day = daysOfWeek[date.getDay()];
+      acc[day] = (acc[day] || 0) + 1;
       return acc;
     }, {});
 
-    const dates = Object.keys(groupedByDate).sort();
-    const counts = dates.map(date => groupedByDate[date]);
+    // Ensure all days are represented in order
+    const counts = daysOfWeek.map(day => groupedByDay[day] || 0);
 
     return {
-      labels: dates,
+      labels: daysOfWeek,
       datasets: [
         {
           label: 'Number of Transactions',
@@ -126,7 +128,7 @@ const LatestTransaction = () => {
       },
       title: {
         display: true,
-        text: 'Transaction Volume Over Time',
+        text: 'Transaction Volume By Day',
         color: 'white'
       }
     },
@@ -165,6 +167,10 @@ const LatestTransaction = () => {
     fetchAllTransactions();
   };
 
+  const calculateTotalAmount = () => {
+    return transactions.reduce((total, tx) => total + Number(tx.amount), 0).toFixed(2);
+  };
+
   return (
     <div className="min-h-screen bg-gray-900 py-8 sm:py-12 px-2 sm:px-4 md:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -183,7 +189,7 @@ const LatestTransaction = () => {
                 <Bar data={prepareChartData()} options={chartOptions} />
               </div>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
               <div className="bg-indigo-600 rounded-lg p-4">
                 <h4 className="text-white text-sm font-medium">Total Transactions</h4>
                 <p className="text-white text-2xl font-bold">{transactions.length}</p>
@@ -191,7 +197,7 @@ const LatestTransaction = () => {
               <div className="bg-green-600 rounded-lg p-4">
                 <h4 className="text-white text-sm font-medium">Successful</h4>
                 <p className="text-white text-2xl font-bold">
-                  {transactions.filter(tx => tx.status === 'success').length}
+                  {transactions.filter(tx => tx.status === 'completed').length}
                 </p>
               </div>
               <div className="bg-red-600 rounded-lg p-4">
@@ -205,6 +211,10 @@ const LatestTransaction = () => {
                 <p className="text-white text-2xl font-bold">
                   {transactions.filter(tx => tx.status === 'pending').length}
                 </p>
+              </div>
+              <div className="bg-purple-600 rounded-lg p-4">
+                <h4 className="text-white text-sm font-medium">Total Amount</h4>
+                <p className="text-white text-2xl font-bold">{calculateTotalAmount()}</p>
               </div>
             </div>
           </div>
@@ -259,14 +269,24 @@ const LatestTransaction = () => {
           <div className="bg-gray-800 rounded-lg p-4 sm:p-6 mb-6 sm:mb-8">
             <h2 className="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4">Search Result</h2>
             <div className="bg-gray-700 rounded-lg p-3 sm:p-4 space-y-2 text-sm sm:text-base">
-              <p className="text-gray-300"><span className="font-bold">Hash:</span> <span className="break-all">{searchResult.Transaction_Hash}</span></p>
+              <p className="text-gray-300"><span className="font-bold">Hash:</span> <span className="break-all">{searchResult.transaction_Hash}</span></p>
               <p className="text-gray-300"><span className="font-bold">Amount:</span> {searchResult.amount}</p>
-              <p className="text-gray-300"><span className="font-bold">Gas Fee:</span> {searchResult.GasFee}</p>
+              <p className="text-gray-300"><span className="font-bold">Gas Fee:</span> {searchResult.GassFee}</p>
               <p className="text-gray-300"><span className="font-bold">Type:</span> {searchResult.transactionType}</p>
-              <p className="text-gray-300"><span className="font-bold">Status:</span> {searchResult.status}</p>
+              <p className="text-gray-300 flex items-center gap-2">
+                <span className="font-bold ">Status:</span>
+                <span className="flex items-center gap-2">
+                  {searchResult.status}
+                  {searchResult.status.toLowerCase() === 'completed' && (
+                    <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                  )}
+                </span>
+              </p>
               <p className="text-gray-300"><span className="font-bold">Sender:</span> <span className="break-all">{searchResult.senderAddress}</span></p>
               <p className="text-gray-300"><span className="font-bold">Receiver:</span> <span className="break-all">{searchResult.receiverAddress}</span></p>
-              <p className="text-gray-300"><span className="font-bold">Date:</span> {searchResult.date}</p>
+              <p className="text-gray-300"><span className="font-bold">Date:</span> {searchResult.timestamp}</p>
             </div>
           </div>
         )}
@@ -279,10 +299,10 @@ const LatestTransaction = () => {
                 <tr>
                   <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs sm:text-sm font-medium text-gray-300 uppercase tracking-wider">Hash</th>
                   <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs sm:text-sm font-medium text-gray-300 uppercase tracking-wider">Amount</th>
-                  <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs sm:text-sm font-medium text-gray-300 uppercase tracking-wider hidden sm:table-cell">Status</th>
-                  <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs sm:text-sm font-medium text-gray-300 uppercase tracking-wider hidden md:table-cell">Time</th>
-                  <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs sm:text-sm font-medium text-gray-300 uppercase tracking-wider hidden lg:table-cell">Sender</th>
-                  <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs sm:text-sm font-medium text-gray-300 uppercase tracking-wider hidden lg:table-cell">Receiver</th>
+                  <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs sm:text-sm font-medium text-gray-300 uppercase tracking-wider">Status</th>
+                  <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs sm:text-sm font-medium text-gray-300 uppercase tracking-wider">Time</th>
+                  <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs sm:text-sm font-medium text-gray-300 uppercase tracking-wider">Sender</th>
+                  <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs sm:text-sm font-medium text-gray-300 uppercase tracking-wider">Receiver</th>
                 </tr>
               </thead>
               <tbody className="bg-gray-800 divide-y divide-gray-700">
@@ -294,8 +314,13 @@ const LatestTransaction = () => {
                     <td className="px-3 sm:px-6 py-2 sm:py-4 text-xs sm:text-sm text-gray-300">
                       {tx.amount}
                     </td>
-                    <td className="px-3 sm:px-6 py-2 sm:py-4 text-xs sm:text-sm text-gray-300">
+                    <td className="px-3 sm:px-6 py-2 sm:py-4 text-xs sm:text-sm text-gray-300 flex items-center gap-2">
                       {tx.status}
+                      {tx.status.toLowerCase() === 'completed' && (
+                        <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                      )}
                     </td>
                     <td className="px-3 sm:px-6 py-2 sm:py-4 text-xs sm:text-sm text-gray-300">
                       {tx.date}

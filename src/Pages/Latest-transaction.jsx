@@ -170,6 +170,11 @@ const LatestTransaction = () => {
   const calculateTotalAmount = () => {
     return transactions.reduce((total, tx) => total + Number(tx.amount), 0).toFixed(2);
   };
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const id = user?.receiveAddress;
+    console.log(id);  
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-900 py-8 sm:py-12 px-2 sm:px-4 md:px-6 lg:px-8">
@@ -213,7 +218,7 @@ const LatestTransaction = () => {
                 </p>
               </div>
               <div className="bg-purple-600 rounded-lg p-4">
-                <h4 className="text-white text-sm font-medium">Total Amount</h4>
+                <h4 className="text-white text-sm font-medium">Total Coins</h4>
                 <p className="text-white text-2xl font-bold">{calculateTotalAmount()}</p>
               </div>
             </div>

@@ -71,14 +71,14 @@ const AboutPage = () => {
             {/* Team Member 1 */}
             <div className="bg-gray-800 rounded-xl p-6 text-center">
               <img
-                src="https://via.placeholder.com/150"
+                src="https://devabubakkarsajid.web.app/pic/abubakkar.jpg"
                 alt="CEO"
                 className="w-32 h-32 rounded-full mx-auto mb-4"
               />
-              <h3 className="text-xl font-bold text-white mb-2">John Smith</h3>
+              <h3 className="text-xl font-bold text-white mb-2">Abu-bakkar Sajid</h3>
               <p className="text-indigo-500 mb-4">Chief Executive Officer</p>
               <p className="text-gray-400">
-                15+ years of experience in blockchain technology and financial services.
+                2+ years of experience in Full-Stack Developer and and modern web technologies.
               </p>
             </div>
 

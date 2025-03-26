@@ -5,7 +5,8 @@ import AboutPage from "./Pages/Aboutpage";
 import NotFoundPage from "./Pages/404page";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LatestTransaction from "./Pages/Latest-transaction";
-
+import Login from "./Pages/Login";
+import Wallet from "./Pages/Wallet";
 function App() {
   return (
     <Router>
@@ -16,6 +17,8 @@ function App() {
         {/* <Route path="/mining" element={<MiningPage />} />
         <Route path="/wallet" element={<WalletPage />} /> */}
         <Route path="/transaction" element={<LatestTransaction />} />
+        <Route path="/login" element={<Login />} /> 
+        <Route path="/wallet" element={<Wallet />} />
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

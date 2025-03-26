@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { FiArrowUpRight, FiArrowDownLeft } from "react-icons/fi";
 import { BsArrowLeftRight } from "react-icons/bs";
+import 'react-toastify/dist/ReactToastify.css';
 
 const Wallet = () => {
   const [user, setUser] = useState(null);
@@ -9,6 +10,8 @@ const Wallet = () => {
   const [totalBalance, setTotalBalance] = useState(0);
   const [expandedTransactionId, setExpandedTransactionId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [showReceiverCard, setShowReceiverCard] = useState(false);
+  const [receiverAddress, setReceiverAddress] = useState("");
   const transactionsPerPage = 7;
 
   useEffect(() => {
@@ -60,6 +63,17 @@ const Wallet = () => {
     setExpandedTransactionId(expandedTransactionId === transactionId ? null : transactionId);
   };
 
+  const handleReceiveClick = () => {
+    setReceiverAddress(user.receiveAddress); // Assuming user has a receiveAddress property
+    setShowReceiverCard(true);
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(receiverAddress);
+    toast.success("Receiver address copied to clipboard!");
+    setShowReceiverCard(false); // Close the card after copying
+  };
+
   // Calculate the current transactions to display
   const indexOfLastTransaction = currentPage * transactionsPerPage;
   const indexOfFirstTransaction = indexOfLastTransaction - transactionsPerPage;
@@ -72,10 +86,10 @@ const Wallet = () => {
       <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-md">
         <h2 className="text-3xl font-bold text-gray-900 text-center">Wallet</h2>
         <p className="text-center text-gray-500">Total Balance</p>
-        <h3 className="text-4xl font-semibold text-gray-800 text-center my-2">${Math.round(totalBalance)}</h3>
+        <h3 className="text-4xl font-semibold text-gray-800 text-center my-2">{Math.round(totalBalance)} AUSC</h3>
 
         <div className="flex justify-around my-4">
-          <button className="bg-green-500 text-white py-2 px-4 rounded-lg flex items-center gap-2 shadow-md hover:bg-green-600">
+          <button onClick={handleReceiveClick} className="bg-green-500 text-white py-2 px-4 rounded-lg flex items-center gap-2 shadow-md hover:bg-green-600">
             <FiArrowDownLeft /> Receive
           </button>
           <button className="bg-blue-500 text-white py-2 px-4 rounded-lg flex items-center gap-2 shadow-md hover:bg-blue-600">
@@ -85,6 +99,16 @@ const Wallet = () => {
             <FiArrowUpRight /> Send
           </button>
         </div>
+
+        {showReceiverCard && (
+          <div className="mt-4 p-4 bg-gray-200 rounded-lg shadow-md">
+            <h4 className="text-lg font-bold">Receiver Address</h4>
+            <p className="text-gray-700">{receiverAddress}</p>
+            <button onClick={copyToClipboard} className="mt-2 bg-blue-500 text-white py-2 px-4 rounded-lg">
+              Copy Address
+            </button>
+          </div>
+        )}
 
         <h3 className="text-xl font-bold text-gray-700">Transactions</h3>
         <ul className="mt-4 space-y-3">
@@ -97,17 +121,29 @@ const Wallet = () => {
                 >
                   <span className="text-gray-700">{new Date(tx.timestamp).toLocaleString()}</span>
                   <span className="text-gray-700">{tx.senderAddress.substring(0, 8)}...{tx.senderAddress.slice(-6)}</span>
-                  <span className={tx.transactionType === "credit" ? "text-green-600 font-semibold" : "text-red-600 font-semibold"}>${tx.amount}</span>
+                  <span className={tx.transactionType === "credit" ? "text-green-600 font-semibold" : "text-red-600 font-semibold"}>
+                    {tx.amount} AUSC
+                    {tx.receiverAddress === user.receiveAddress && (
+                      <span className="ml-2 text-green-600" title="Transaction Received">
+                        <FiArrowDownLeft />
+                      </span>
+                    )}
+                    {tx.receiverAddress !== user.receiveAddress && (
+                      <span className="ml-2 text-red-600" title="Transaction Sent">
+                        <FiArrowUpRight />
+                      </span>
+                    )}
+                  </span>
                 </li>
                 {expandedTransactionId === tx._id && (
                   <div className="mt-2 p-4 bg-white rounded-lg shadow-md">
                     <h4 className="text-lg font-bold">Transaction Details</h4>
                     <p><strong>Date:</strong> {new Date(tx.timestamp).toLocaleString()}</p>
                     <p><strong>Sender Address:</strong> {tx.senderAddress}</p>
-                    <p><strong>Amount:</strong> ${tx.amount}</p>
-                    <p><strong>Gas Fee:</strong> ${tx.GassFee}</p>
+                    <p><strong>Amount:</strong>  {tx.amount} AUSC</p>
+                    <p><strong>Gas Fee:</strong>  {tx.GassFee} AUSC</p>
                     <p><strong>Status:</strong> {tx.status}</p>
-                    <p><strong><a href={`${process.env.REACT_APP_API_URL}/get-transaction/${tx.transaction_Hash}`} target="_blank" rel="noopener noreferrer">Transaction Hash</a></strong></p>
+                    <p className="p-2 bg-gray-300  text-center rounded-lg"><strong><a href={`${process.env.REACT_APP_API_URL}/get-transaction/${tx.transaction_Hash}`} target="_blank" rel="noopener noreferrer">Transaction Hash</a></strong></p>
                   </div>
                 )}
               </div>

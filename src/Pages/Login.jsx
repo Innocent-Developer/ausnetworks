@@ -111,7 +111,15 @@ const Login = () => {
               />
             </div>
           </div>
-
+          <div>
+            <button 
+              onClick={() => navigate('/signup')}
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Sign Up
+            </button>
+            
+          </div>
           <div>
             <button
               type="submit"

@@ -30,7 +30,7 @@ const Navbar = () => {
             <NavLink to="/mining" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200">
               Mining
             </NavLink>
-            <NavLink to="/wallet" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200">
+            <NavLink to="/login" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200">
               Wallet
             </NavLink>
             <NavLink to="/transaction"  className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200">
@@ -72,7 +72,7 @@ const Navbar = () => {
           <NavLink to="/" className="block text-white text-lg">Home</NavLink>
           <NavLink to="/about" className="block text-white text-lg">About</NavLink>
           <NavLink to="/mining" className="block text-white text-lg">Mining</NavLink>
-          <NavLink to="/wallet" className="block text-white text-lg">Wallet</NavLink>
+          <NavLink to="/login" className="block text-white text-lg">Wallet</NavLink>
           <NavLink to="/transaction" className="block text-white text-lg">Latest Transaction</NavLink>
           <NavLink to="/contact" className="block text-white text-lg bg-indigo-600 px-4 py-2 rounded-md">Contact</NavLink>
         </div>

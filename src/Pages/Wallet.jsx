@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { FiArrowUpRight, FiArrowDownLeft } from "react-icons/fi";
 import { BsArrowLeftRight } from "react-icons/bs";
 import "react-toastify/dist/ReactToastify.css";
-
+import Loader from "../Compontents/loader";
 const Wallet = () => {
   const [user, setUser] = useState(null);
   const [transactions, setTransactions] = useState([]);
@@ -16,6 +16,7 @@ const Wallet = () => {
   const [activeTab, setActiveTab] = useState("all");
   const transactionsPerPage = 7;
   const [showSendForm, setShowSendForm] = useState(false); // New state to control send form visibility
+  const [loading, setLoading] = useState(false); // New state for loading
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -52,6 +53,7 @@ const Wallet = () => {
   };
 
   const fetchUserTransactions = async (userId) => {
+    setLoading(true); // Start loading
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/get-user-transaction`,
@@ -66,10 +68,13 @@ const Wallet = () => {
       setTransactions(data || []);
     } catch (error) {
       toast.error("Error fetching transactions: " + error.message);
+    } finally {
+      setLoading(false); // End loading
     }
   };
 
   const fetchSenderTransactions = async (userId) => {
+    setLoading(true); // Start loading
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/get-sender-user-transaction`,
@@ -81,9 +86,11 @@ const Wallet = () => {
       );
       if (!response.ok) throw new Error("Failed to fetch sender transactions");
       const data = await response.json();
-      setTransactions((prevTransactions) => [...prevTransactions, ...data]);
+      setTransactions(data); // Set transactions to only sender transactions
     } catch (error) {
       toast.error("Error fetching sender transactions: " + error.message);
+    } finally {
+      setLoading(false); // End loading
     }
   };
 
@@ -96,14 +103,24 @@ const Wallet = () => {
   const handleReceiveClick = () => {
     setReceiverAddress(user.receiveAddress);
     setShowReceiverCard((prev) => !prev); // Toggle receiver card visibility
-    setActiveTab("receivetransaction");
   };
-
+  
+  const handleReceiveTransactionClick = () => {
+    setActiveTab("receivetransaction");
+    fetchUserTransactions(user.receiveAddress); // Fetch only user transactions
+  };
+  
+  const handlesenderTransactionClick = () => {
+    setActiveTab("sendtransaction");
+    fetchSenderTransactions(user.senderAddress); // Fetch only sender transactions
+  };
+  
   const handleSendClick = () => {
     setShowSendForm((prev) => !prev); // Toggle send form visibility
   };
 
-  const handleSend = async () => {
+  const handleSend = async (e) => {
+    e.preventDefault(); // Prevent page reload
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/send-coin`,
@@ -120,6 +137,9 @@ const Wallet = () => {
       if (!response.ok) throw new Error("Failed to send coins");
       const data = await response.json();
       toast.success(`Successfully sent ${amount} AUSC to ${receiverAddress}`);
+      // Optionally refresh transactions after sending
+      await fetchUserTransactions(user.receiveAddress);
+      await fetchSenderTransactions(user.senderAddress);
     } catch (error) {
       toast.error("Error sending coins: " + error.message);
     } finally {
@@ -127,6 +147,14 @@ const Wallet = () => {
       setReceiverAddress("");
       setAmount("");
       setShowSendForm(false);
+    }
+  };
+
+  const refreshWallet = async () => {
+    if (user) {
+      await fetchWalletData(user.id);
+      await fetchUserTransactions(user.receiveAddress);
+      await fetchSenderTransactions(user.senderAddress);
     }
   };
 
@@ -178,15 +206,22 @@ const Wallet = () => {
           >
             <FiArrowUpRight /> Send
           </button>
+          <button
+            onClick={refreshWallet}
+            className="bg-yellow-500 text-white py-2 px-4 rounded-lg flex items-center gap-2 shadow-md hover:bg-yellow-600"
+          >
+             Refresh
+          </button>
         </div>
 
         {showSendForm && (
-          <div className="mt-4 p-4 bg-gray-200 rounded-lg shadow-md">
+          <form className="mt-4 p-4 bg-gray-200 rounded-lg shadow-md" onSubmit={handleSend}>
             <h4 className="text-lg font-bold">Send Coins</h4>
             <input
               type="text"
               placeholder="Receiver Address"
               value={receiverAddress}
+              required
               onChange={(e) => setReceiverAddress(e.target.value)}
               className="mt-2 p-2 border rounded w-full"
             />
@@ -194,16 +229,17 @@ const Wallet = () => {
               type="number"
               placeholder="Amount"
               value={amount}
+              required
               onChange={(e) => setAmount(e.target.value)}
               className="mt-2 p-2 border rounded w-full"
             />
             <button
-              onClick={handleSend}
+              type="submit"
               className="mt-2 bg-blue-500 text-white py-2 px-4 rounded-lg"
             >
               Send
             </button>
-          </div>
+          </form>
         )}
 
         {/* Tabs for filtering transactions */}
@@ -217,6 +253,7 @@ const Wallet = () => {
             All
           </button>
           <button
+            onClick={ handlesenderTransactionClick}
             className={`py-2 px-4 rounded-lg ${
               activeTab === "send" ? "bg-gray-300" : "bg-gray-200"
             }`}
@@ -224,12 +261,12 @@ const Wallet = () => {
             <FiArrowUpRight className="inline-block mr-2" /> Send
           </button>
           <button
-            onClick={() => setActiveTab("receivetransaction")}
+             onClick={handleReceiveTransactionClick}
             className={`py-2 px-4 rounded-lg ${
               activeTab === "receive" ? "bg-gray-300" : "bg-gray-200"
             }`}
           >
-            <FiArrowDownLeft className="inline-block mr-2" /> Receive
+            <FiArrowDownLeft className="inline-block mr-2" /> Receive Transaction
           </button>
         </div>
 
@@ -246,90 +283,97 @@ const Wallet = () => {
           </div>
         )}
 
-        <h3 className="text-xl font-bold text-gray-700">Transactions</h3>
-
-        <ul className="mt-4 space-y-3">
-          {currentTransactions.length > 0 ? (
-            currentTransactions.map((tx) => (
-              <div key={tx._id}>
-                <li
-                  onClick={() => handleTransactionClick(tx._id)}
-                  className={`p-4 rounded-lg shadow-md cursor-pointer flex justify-between items-center transition-all duration-300 ${
-                    tx.transactionType === "credit"
-                      ? "bg-green-100"
-                      : "bg-red-100"
-                  }`}
-                >
-                  <span className="text-gray-700">
-                    {new Date(tx.timestamp).toLocaleString()}
-                  </span>
-                  <span className="text-gray-700">
-                    {tx.senderAddress.substring(0, 8)}...
-                    {tx.senderAddress.slice(-6)}
-                  </span>
-                  <span
-                    className={
-                      tx.transactionType === "credit"
-                        ? "text-green-600 font-semibold"
-                        : "text-red-600 font-semibold"
-                    }
-                  >
-                    {tx.amount} AUSC
-                    {tx.receiverAddress === user.receiveAddress ? (
-                      <span
-                        className="ml-2 text-green-600"
-                        title="Transaction Received"
-                      >
-                        <FiArrowDownLeft />
+        {loading ? ( // Show loader while fetching transactions
+          <div className="flex justify-center items-center mt-10 px-10 ">
+            <Loader />
+          </div>
+        ) : (
+          <>
+            <h3 className="text-xl font-bold text-gray-700">Transactions</h3>
+            <ul className="mt-4 space-y-3">
+              {currentTransactions.length > 0 ? (
+                currentTransactions.map((tx) => (
+                  <div key={tx._id}>
+                    <li
+                      onClick={() => handleTransactionClick(tx._id)}
+                      className={`p-4 rounded-lg shadow-md cursor-pointer flex justify-between items-center transition-all duration-300 ${
+                        tx.transactionType === "credit"
+                          ? "bg-green-100"
+                          : "bg-red-100"
+                      }`}
+                    >
+                      <span className="text-gray-700">
+                        {new Date(tx.timestamp).toLocaleString()}
                       </span>
-                    ) : (
-                      <span
-                        className="ml-2 text-red-600"
-                        title="Transaction Sent"
-                      >
-                        <FiArrowUpRight />
+                      <span className="text-gray-700">
+                        {tx.senderAddress.substring(0, 8)}...
+                        {tx.senderAddress.slice(-6)}
                       </span>
+                      <span
+                        className={
+                          tx.transactionType === "credit"
+                            ? "text-green-600 font-semibold"
+                            : "text-red-600 font-semibold"
+                        }
+                      >
+                        {tx.amount} AUSC
+                        {tx.receiverAddress === user.receiveAddress ? (
+                          <span
+                            className="ml-2 text-green-600"
+                            title="Transaction Received"
+                          >
+                            <FiArrowDownLeft />
+                          </span>
+                        ) : (
+                          <span
+                            className="ml-2 text-red-600"
+                            title="Transaction Sent"
+                          >
+                            <FiArrowUpRight />
+                          </span>
+                        )}
+                      </span>
+                    </li>
+                    {expandedTransactionId === tx._id && (
+                      <div className="mt-2 p-4 bg-white rounded-lg shadow-md">
+                        <h4 className="text-lg font-bold">Transaction Details</h4>
+                        <p>
+                          <strong>Date:</strong>{" "}
+                          {new Date(tx.timestamp).toLocaleString()}
+                        </p>
+                        <p>
+                          <strong>Sender Address:</strong> {tx.senderAddress}
+                        </p>
+                        <p>
+                          <strong>Amount:</strong> {tx.amount} AUSC
+                        </p>
+                        <p>
+                          <strong>Gas Fee:</strong> {tx.GassFee} AUSC
+                        </p>
+                        <p>
+                          <strong>Status:</strong> {tx.status}
+                        </p>
+                        <p className="p-2 bg-gray-300  text-center rounded-lg">
+                          <strong>
+                            <a
+                              href={`${process.env.REACT_APP_API_URL}/get-transaction/${tx.transaction_Hash}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              Transaction Hash
+                            </a>
+                          </strong>
+                        </p>
+                      </div>
                     )}
-                  </span>
-                </li>
-                {expandedTransactionId === tx._id && (
-                  <div className="mt-2 p-4 bg-white rounded-lg shadow-md">
-                    <h4 className="text-lg font-bold">Transaction Details</h4>
-                    <p>
-                      <strong>Date:</strong>{" "}
-                      {new Date(tx.timestamp).toLocaleString()}
-                    </p>
-                    <p>
-                      <strong>Sender Address:</strong> {tx.senderAddress}
-                    </p>
-                    <p>
-                      <strong>Amount:</strong> {tx.amount} AUSC
-                    </p>
-                    <p>
-                      <strong>Gas Fee:</strong> {tx.GassFee} AUSC
-                    </p>
-                    <p>
-                      <strong>Status:</strong> {tx.status}
-                    </p>
-                    <p className="p-2 bg-gray-300  text-center rounded-lg">
-                      <strong>
-                        <a
-                          href={`${process.env.REACT_APP_API_URL}/get-transaction/${tx.transaction_Hash}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Transaction Hash
-                        </a>
-                      </strong>
-                    </p>
                   </div>
-                )}
-              </div>
-            ))
-          ) : (
-            <p className="text-gray-400">No transactions found.</p>
-          )}
-        </ul>
+                ))
+              ) : (
+                <p className="text-gray-400">No transactions found.</p>
+              )}
+            </ul>
+          </>
+        )}
 
         {/* Pagination Controls */}
         <div className="flex justify-between mt-4">

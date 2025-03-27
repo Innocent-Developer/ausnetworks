@@ -8,8 +8,10 @@ import LatestTransaction from "./Pages/Latest-transaction";
 import Login from "./Pages/Login";
 import Wallet from "./Pages/Wallet";
 import Signup from "./Pages/Signup";
+import { ToastContainer } from "react-toastify";
 function App() {
   return (
+
     <Router>
       <Navbar />
       <Routes>
@@ -25,6 +27,7 @@ function App() {
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Footer />
+      <ToastContainer />
     </Router>
   );
 }

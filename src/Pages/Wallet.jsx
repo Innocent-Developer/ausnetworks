@@ -47,7 +47,7 @@ const Wallet = () => {
       );
       if (!response.ok) throw new Error("Failed to fetch wallet data");
       const data = await response.json();
-      setTotalBalance(data.totalBalance || 0);
+      setTotalBalance(data.availableBalance || 0);
     } catch (error) {
       toast.error("Error fetching wallet data: " + error.message);
     }

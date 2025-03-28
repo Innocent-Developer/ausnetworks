@@ -15,8 +15,9 @@ const Wallet = () => {
   const [amount, setAmount] = useState(""); // New state for amount
   const [activeTab, setActiveTab] = useState("all");
   const transactionsPerPage = 7;
-  const [showSendForm, setShowSendForm] = useState(false); // New state to control send form visibility
   const [loading, setLoading] = useState(false); // New state for loading
+  const [showSendPopup, setShowSendPopup] = useState(false);
+  const [showPopup,setShowPopup]= useState(false)
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -102,7 +103,8 @@ const Wallet = () => {
 
   const handleReceiveClick = () => {
     setReceiverAddress(user.receiveAddress);
-    setShowReceiverCard((prev) => !prev); // Toggle receiver card visibility
+    // setShowReceiverCard((prev) => !prev); // Toggle receiver card visibility
+    setShowPopup(true)
   };
   
   const handleReceiveTransactionClick = () => {
@@ -116,7 +118,8 @@ const Wallet = () => {
   };
   
   const handleSendClick = () => {
-    setShowSendForm((prev) => !prev); // Toggle send form visibility
+   
+    setShowSendPopup(true)
   };
 
   const handleSend = async (e) => {
@@ -146,13 +149,14 @@ const Wallet = () => {
       // Reset form after sending
       setReceiverAddress("");
       setAmount("");
-      setShowSendForm(false);
+      setShowSendPopup(false);
     }
   };
 
   const refreshWallet = async () => {
     if (user) {
       await fetchWalletData(user.id);
+      toast.success("Wallet refreshed successfully!");
       await fetchUserTransactions(user.receiveAddress);
       await fetchSenderTransactions(user.senderAddress);
     }
@@ -162,6 +166,9 @@ const Wallet = () => {
     navigator.clipboard.writeText(receiverAddress);
     toast.success("Receiver address copied to clipboard!");
     setShowReceiverCard(false);
+  };
+  const popUp = () => {
+    toast.info("Coming Soon!");
   };
 
   const filteredTransactions = transactions.filter((tx) => {
@@ -190,57 +197,75 @@ const Wallet = () => {
           {Math.round(totalBalance)} AUSC
         </h3>
 
-        <div className="flex justify-around my-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-4">
           <button
             onClick={handleReceiveClick}
-            className="bg-green-500 text-white py-2 px-4 rounded-lg flex items-center gap-2 shadow-md hover:bg-green-600"
+            
+            className="bg-green-500 text-white py-2 px-4 rounded-lg flex items-center gap-2 shadow-md hover:bg-green-700 w-full"
           >
             <FiArrowDownLeft /> Receive
           </button>
-          <button className="bg-blue-500 text-white py-2 px-4 rounded-lg flex items-center gap-2 shadow-md hover:bg-blue-600">
+          <button 
+            className="bg-blue-500 text-white py-2 px-4 rounded-lg flex items-center gap-2 shadow-md hover:bg-blue-700 w-full" 
+            onClick={popUp}
+          >
             <BsArrowLeftRight /> Swap
           </button>
           <button
             onClick={handleSendClick}
-            className="bg-red-500 text-white py-2 px-4 rounded-lg flex items-center gap-2 shadow-md hover:bg-red-600"
+            className="bg-red-500 text-white py-2 px-4 rounded-lg flex items-center gap-2 shadow-md hover:bg-red-700 w-full"
           >
             <FiArrowUpRight /> Send
           </button>
           <button
             onClick={refreshWallet}
-            className="bg-yellow-500 text-white py-2 px-4 rounded-lg flex items-center gap-2 shadow-md hover:bg-yellow-600"
+            className="bg-yellow-500 text-white py-2 px-4 rounded-lg flex items-center gap-2 shadow-md hover:bg-yellow-700 w-full"
           >
              Refresh
           </button>
         </div>
 
-        {showSendForm && (
-          <form className="mt-4 p-4 bg-gray-200 rounded-lg shadow-md" onSubmit={handleSend}>
-            <h4 className="text-lg font-bold">Send Coins</h4>
-            <input
-              type="text"
-              placeholder="Receiver Address"
-              value={receiverAddress}
-              required
-              onChange={(e) => setReceiverAddress(e.target.value)}
-              className="mt-2 p-2 border rounded w-full"
-            />
-            <input
-              type="number"
-              placeholder="Amount"
-              value={amount}
-              required
-              onChange={(e) => setAmount(e.target.value)}
-              className="mt-2 p-2 border rounded w-full"
-            />
-            <button
-              type="submit"
-              className="mt-2 bg-blue-500 text-white py-2 px-4 rounded-lg"
-            >
-              Send
-            </button>
-          </form>
-        )}
+        {showSendPopup && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-xl shadow-2xl w-96 border border-gray-300">
+            <h4 className="text-xl font-semibold text-indigo-700">Send Coins</h4>
+            <form className="mt-4 space-y-3" onSubmit={handleSend}>
+              <input
+                type="text"
+                placeholder="Receiver Address"
+                value={receiverAddress}
+                required
+                onChange={(e) => setReceiverAddress(e.target.value)}
+                className="p-3 border rounded-lg w-full focus:ring-2 focus:ring-indigo-400"
+              />
+              <input
+                type="number"
+                placeholder="Amount"
+                value={amount}
+                required
+                onChange={(e) => setAmount(e.target.value)}
+                className="p-3 border rounded-lg w-full focus:ring-2 focus:ring-indigo-400"
+              />
+              <div className="flex justify-end space-x-2">
+                <button
+                  type="submit"
+                  className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-2 px-5 rounded-lg shadow-md hover:opacity-90"
+                >
+                  Send
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowSendPopup(false)}
+                  className="bg-gray-300 text-black py-2 px-5 rounded-lg shadow-md hover:bg-gray-400"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
 
         {/* Tabs for filtering transactions */}
         <div className="flex justify-around my-4">
@@ -266,22 +291,32 @@ const Wallet = () => {
               activeTab === "receive" ? "bg-gray-300" : "bg-gray-200"
             }`}
           >
-            <FiArrowDownLeft className="inline-block mr-2" /> Receive Transaction
+            <FiArrowDownLeft className="inline-block mr-2" /> Receive
           </button>
         </div>
 
-        {showReceiverCard && (
-          <div className="mt-4 p-4 bg-gray-200 rounded-lg shadow-md">
+        {showPopup && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
             <h4 className="text-lg font-bold">Receiver Address</h4>
-            <p className="text-gray-700">{receiverAddress}</p>
-            <button
-              onClick={copyToClipboard}
-              className="mt-2 bg-blue-500 text-white py-2 px-4 rounded-lg"
-            >
-              Copy Address
-            </button>
+            <p className="text-gray-700 mt-2">{receiverAddress}</p>
+            <div className="mt-4 flex justify-end space-x-2">
+              <button
+                onClick={copyToClipboard}
+                className="bg-blue-500 text-white py-2 px-4 rounded-lg"
+              >
+                Copy Address
+              </button>
+              <button
+                onClick={() => setShowPopup(false)}
+                className="bg-gray-300 text-black py-2 px-4 rounded-lg"
+              >
+                Close
+              </button>
+            </div>
           </div>
-        )}
+        </div>
+      )}
 
         {loading ? ( // Show loader while fetching transactions
           <div className="flex justify-center items-center mt-10 px-10 ">

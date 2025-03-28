@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -7,8 +7,9 @@ const Signup = () => {
   const [Fullname, setFullname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [referallCode, setReferallCode] = useState('');
+  const [referralCode, setReferralCode] = useState('');
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,7 +19,7 @@ const Signup = () => {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ Fullname, email, password, referallCode }),
+        body: JSON.stringify({ Fullname, email, password, referallcode: referralCode }),
       });
 
       const data = await response.json();
@@ -26,6 +27,7 @@ const Signup = () => {
       if (response.ok) {
         toast.success('Signup successful! Please check your email for verification.');
         console.log('Signup successful!');
+        navigate('/login');
       } else {
         toast.error(data.errors ? Object.values(data.errors).join(', ') : data.msg || 'Signup failed.');
       }
@@ -37,11 +39,11 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundImage: "url('/signupbackground.jpeg')", backgroundSize: 'cover', backgroundPosition: 'center', backdropFilter: 'blur(5px)' }}>
       {/* Toast Notification Container */}
       <ToastContainer position="top-right" autoClose={3000} />
 
-      <div className="max-w-md w-full bg-white p-8 rounded-xl shadow-xl">
+      <div className="max-w-md w-full bg-white/50 p-8 rounded-xl shadow-xl" style={{ backdropFilter: 'blur(15px)' }}>
         <h2 className="text-center text-3xl font-bold text-gray-800">Create an Account</h2>
         <p className="text-center text-sm text-gray-600">Join us and start your mining journey!</p>
 
@@ -74,8 +76,8 @@ const Signup = () => {
             type="text"
             className="w-full border border-gray-300 rounded-md p-3 text-gray-900 focus:ring-2 focus:ring-indigo-500"
             placeholder="Referral Code (Optional)"
-            value={referallCode}
-            onChange={(e) => setReferallCode(e.target.value)}
+            value={referralCode}
+            onChange={(e) => setReferralCode(e.target.value)}
           />
 
           <button

@@ -1,6 +1,37 @@
-import React from 'react';
-
+import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 const Footer = () => {
+  const [emailAddress, setemailAddress] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!emailAddress) {
+      setError('Email is required');
+      return;
+    }
+    setError('');
+    
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/store-email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ emailAddress }),
+      });
+
+      if (response.ok) {
+        setSuccess('Email subscribed successfully');
+        toast.success('Email subscribed successfully');
+        setemailAddress('');
+      } else {
+        setError('Failed to subscribe email');
+      }
+    } catch (error) {
+      setError('An error occurred. Please try again.');
+    }
+  };
+
   return (
     <footer className="bg-gradient-to-r from-gray-800 to-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -54,10 +85,13 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="text-xl font-semibold text-white">Stay Updated</h3>
             <p className="text-gray-400">Subscribe to our newsletter for the latest updates.</p>
-            <form className="flex flex-col space-y-2">
+            <form className="flex flex-col space-y-2" onSubmit={handleSubmit}>
               <input
-                type="email"
+                type="emailAddress"
                 placeholder="Enter your email"
+                value={emailAddress}
+                onChange={(e) => setemailAddress(e.target.value)}
+                required
                 className="px-4 py-2 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
               <button
@@ -67,6 +101,8 @@ const Footer = () => {
                 Subscribe
               </button>
             </form>
+            {error && <p className="text-red-500">{error}</p>}
+            {success && <p className="text-green-500">{success}</p>}
           </div>
         </div>
 

@@ -17,7 +17,7 @@ const Wallet = () => {
   const transactionsPerPage = 7;
   const [loading, setLoading] = useState(false); // New state for loading
   const [showSendPopup, setShowSendPopup] = useState(false);
-  const [showPopup,setShowPopup]= useState(false)
+  const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -104,22 +104,21 @@ const Wallet = () => {
   const handleReceiveClick = () => {
     setReceiverAddress(user.receiveAddress);
     // setShowReceiverCard((prev) => !prev); // Toggle receiver card visibility
-    setShowPopup(true)
+    setShowPopup(true);
   };
-  
+
   const handleReceiveTransactionClick = () => {
     setActiveTab("receivetransaction");
     fetchUserTransactions(user.receiveAddress); // Fetch only user transactions
   };
-  
+
   const handlesenderTransactionClick = () => {
     setActiveTab("sendtransaction");
     fetchSenderTransactions(user.senderAddress); // Fetch only sender transactions
   };
-  
+
   const handleSendClick = () => {
-   
-    setShowSendPopup(true)
+    setShowSendPopup(true);
   };
 
   const handleSend = async (e) => {
@@ -139,10 +138,18 @@ const Wallet = () => {
       );
       if (!response.ok) throw new Error("Failed to send coins");
       const data = await response.json();
-      toast.success(`Successfully sent ${amount} AUSC to ${receiverAddress}`);
-      // Optionally refresh transactions after sending
-      await fetchUserTransactions(user.receiveAddress);
-      await fetchSenderTransactions(user.senderAddress);
+
+      if (data.transactionResult.status === "failed") {
+        toast.error("Error sending coins: " + data.transactionResult.message);
+      } else if (data.transactionResult.status === "completed") {
+        toast.success(`Successfully sent ${amount} AUSC to ${receiverAddress}`);
+        await fetchUserTransactions(user.receiveAddress);
+        await fetchSenderTransactions(user.senderAddress);
+      }
+
+      if (data.transactionResult.status === "pending") {
+        toast.info("Transaction is pending");
+      }
     } catch (error) {
       toast.error("Error sending coins: " + error.message);
     } finally {
@@ -190,27 +197,14 @@ const Wallet = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-5">
-      <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-md">
+      <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-md md:max-w-2xl lg:max-w-4xl">
         <h2 className="text-3xl font-bold text-gray-900 text-center">Wallet</h2>
         <p className="text-center text-gray-500">Total Balance</p>
         <h3 className="text-4xl font-semibold text-gray-800 text-center my-2">
           {Math.round(totalBalance)} AUSC
         </h3>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-4">
-          <button
-            onClick={handleReceiveClick}
-            
-            className="bg-green-500 text-white py-2 px-4 rounded-lg flex items-center gap-2 shadow-md hover:bg-green-700 w-full"
-          >
-            <FiArrowDownLeft /> Receive
-          </button>
-          <button 
-            className="bg-blue-500 text-white py-2 px-4 rounded-lg flex items-center gap-2 shadow-md hover:bg-blue-700 w-full" 
-            onClick={popUp}
-          >
-            <BsArrowLeftRight /> Swap
-          </button>
+        <div className="grid grid-cols-2 gap-4 my-4">
           <button
             onClick={handleSendClick}
             className="bg-red-500 text-white py-2 px-4 rounded-lg flex items-center gap-2 shadow-md hover:bg-red-700 w-full"
@@ -218,54 +212,73 @@ const Wallet = () => {
             <FiArrowUpRight /> Send
           </button>
           <button
+            onClick={handleReceiveClick}
+            className="bg-green-500 text-white py-2 px-4 rounded-lg flex items-center gap-2 shadow-md hover:bg-green-700 w-full"
+          >
+            <FiArrowDownLeft /> Receive
+          </button>
+          <button
+            className="bg-blue-500 text-white py-2 px-4 rounded-lg flex items-center gap-2 shadow-md hover:bg-blue-700 w-full"
+            onClick={popUp}
+          >
+            <BsArrowLeftRight /> Swap
+          </button>
+          <button
+            onClick={popUp} // Assuming a placeholder function for now
+            className="bg-purple-500 text-white py-2 px-4 rounded-lg flex items-center gap-2 shadow-md hover:bg-purple-700 w-full"
+          >
+            Coin Stack
+          </button>
+          <button
             onClick={refreshWallet}
             className="bg-yellow-500 text-white py-2 px-4 rounded-lg flex items-center gap-2 shadow-md hover:bg-yellow-700 w-full"
           >
-             Refresh
+            Refresh
           </button>
         </div>
 
         {showSendPopup && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-xl shadow-2xl w-96 border border-gray-300">
-            <h4 className="text-xl font-semibold text-indigo-700">Send Coins</h4>
-            <form className="mt-4 space-y-3" onSubmit={handleSend}>
-              <input
-                type="text"
-                placeholder="Receiver Address"
-                value={receiverAddress}
-                required
-                onChange={(e) => setReceiverAddress(e.target.value)}
-                className="p-3 border rounded-lg w-full focus:ring-2 focus:ring-indigo-400"
-              />
-              <input
-                type="number"
-                placeholder="Amount"
-                value={amount}
-                required
-                onChange={(e) => setAmount(e.target.value)}
-                className="p-3 border rounded-lg w-full focus:ring-2 focus:ring-indigo-400"
-              />
-              <div className="flex justify-end space-x-2">
-                <button
-                  type="submit"
-                  className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-2 px-5 rounded-lg shadow-md hover:opacity-90"
-                >
-                  Send
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setShowSendPopup(false)}
-                  className="bg-gray-300 text-black py-2 px-5 rounded-lg shadow-md hover:bg-gray-400"
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="bg-white p-6 rounded-xl shadow-2xl w-96 border border-gray-300">
+              <h4 className="text-xl font-semibold text-indigo-700">
+                Send Coins
+              </h4>
+              <form className="mt-4 space-y-3" onSubmit={handleSend}>
+                <input
+                  type="text"
+                  placeholder="Receiver Address"
+                  value={receiverAddress}
+                  required
+                  onChange={(e) => setReceiverAddress(e.target.value)}
+                  className="p-3 border rounded-lg w-full focus:ring-2 focus:ring-indigo-400"
+                />
+                <input
+                  type="number"
+                  placeholder="Amount"
+                  value={amount}
+                  required
+                  onChange={(e) => setAmount(e.target.value)}
+                  className="p-3 border rounded-lg w-full focus:ring-2 focus:ring-indigo-400"
+                />
+                <div className="flex justify-end space-x-2">
+                  <button
+                    type="submit"
+                    className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-2 px-5 rounded-lg shadow-md hover:opacity-90"
+                  >
+                    Send
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowSendPopup(false)}
+                    className="bg-gray-300 text-black py-2 px-5 rounded-lg shadow-md hover:bg-gray-400"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
-        </div>
-      )}
-
+        )}
 
         {/* Tabs for filtering transactions */}
         <div className="flex justify-around my-4">
@@ -278,7 +291,7 @@ const Wallet = () => {
             All
           </button>
           <button
-            onClick={ handlesenderTransactionClick}
+            onClick={handlesenderTransactionClick}
             className={`py-2 px-4 rounded-lg ${
               activeTab === "send" ? "bg-gray-300" : "bg-gray-200"
             }`}
@@ -286,7 +299,7 @@ const Wallet = () => {
             <FiArrowUpRight className="inline-block mr-2" /> Send
           </button>
           <button
-             onClick={handleReceiveTransactionClick}
+            onClick={handleReceiveTransactionClick}
             className={`py-2 px-4 rounded-lg ${
               activeTab === "receive" ? "bg-gray-300" : "bg-gray-200"
             }`}
@@ -296,27 +309,27 @@ const Wallet = () => {
         </div>
 
         {showPopup && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h4 className="text-lg font-bold">Receiver Address</h4>
-            <p className="text-gray-700 mt-2">{receiverAddress}</p>
-            <div className="mt-4 flex justify-end space-x-2">
-              <button
-                onClick={copyToClipboard}
-                className="bg-blue-500 text-white py-2 px-4 rounded-lg"
-              >
-                Copy Address
-              </button>
-              <button
-                onClick={() => setShowPopup(false)}
-                className="bg-gray-300 text-black py-2 px-4 rounded-lg"
-              >
-                Close
-              </button>
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+              <h4 className="text-lg font-bold">Receiver Address</h4>
+              <p className="text-gray-700 mt-2">{receiverAddress}</p>
+              <div className="mt-4 flex justify-end space-x-2">
+                <button
+                  onClick={copyToClipboard}
+                  className="bg-blue-500 text-white py-2 px-4 rounded-lg"
+                >
+                  Copy Address
+                </button>
+                <button
+                  onClick={() => setShowPopup(false)}
+                  className="bg-gray-300 text-black py-2 px-4 rounded-lg"
+                >
+                  Close
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
         {loading ? ( // Show loader while fetching transactions
           <div className="flex justify-center items-center mt-10 px-10 ">
@@ -371,7 +384,9 @@ const Wallet = () => {
                     </li>
                     {expandedTransactionId === tx._id && (
                       <div className="mt-2 p-4 bg-white rounded-lg shadow-md">
-                        <h4 className="text-lg font-bold">Transaction Details</h4>
+                        <h4 className="text-lg font-bold">
+                          Transaction Details
+                        </h4>
                         <p>
                           <strong>Date:</strong>{" "}
                           {new Date(tx.timestamp).toLocaleString()}

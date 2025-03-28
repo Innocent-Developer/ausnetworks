@@ -1,5 +1,5 @@
 import React from "react";
-
+import { NavLink } from "react-router-dom";
 const HomePage = () => {
   return (
     <div className="min-h-screen bg-gray-900">
@@ -172,9 +172,9 @@ const HomePage = () => {
             Join thousands of satisfied users who have already discovered the
             power of A-U-S Networks
           </p>
-          <button className="bg-white text-gray-900 px-8 py-3 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors duration-300 transform hover:scale-105">
+          <NavLink to="/signup" className="bg-white text-gray-900 px-8 py-3 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors duration-300 transform hover:scale-105">
             Create Account
-          </button>
+          </NavLink>
           <p className="text-sm text-gray-200 mt-4">
             No credit card required • Free to get started
           </p>

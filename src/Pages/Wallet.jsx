@@ -4,6 +4,8 @@ import { FiArrowUpRight, FiArrowDownLeft } from "react-icons/fi";
 import { BsArrowLeftRight } from "react-icons/bs";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "../Compontents/loader";
+import { QRCodeCanvas } from "qrcode.react"; // Import QRCodeCanvas component
+
 const Wallet = () => {
   const [user, setUser] = useState(null);
   const [transactions, setTransactions] = useState([]);
@@ -119,6 +121,8 @@ const Wallet = () => {
 
   const handleSendClick = () => {
     setShowSendPopup(true);
+    // Add scan QR code functionality here
+    toast.info("Scan QR code functionality coming soon!");
   };
 
   const handleSend = async (e) => {
@@ -145,10 +149,6 @@ const Wallet = () => {
         toast.success(`Successfully sent ${amount} AUSC to ${receiverAddress}`);
         await fetchUserTransactions(user.receiveAddress);
         await fetchSenderTransactions(user.senderAddress);
-      }
-
-      if (data.transactionResult.status === "pending") {
-        toast.info("Transaction is pending");
       }
     } catch (error) {
       toast.error("Error sending coins: " + error.message);
@@ -313,6 +313,9 @@ const Wallet = () => {
             <div className="bg-white p-6 rounded-lg shadow-lg w-96">
               <h4 className="text-lg font-bold">Receiver Address</h4>
               <p className="text-gray-700 mt-2">{receiverAddress}</p>
+              <div className="mt-4 flex justify-center">
+                <QRCodeCanvas value={receiverAddress} /> {/* Display QR code */}
+              </div>
               <div className="mt-4 flex justify-end space-x-2">
                 <button
                   onClick={copyToClipboard}

@@ -167,9 +167,21 @@ const LatestTransaction = () => {
     fetchAllTransactions();
   };
 
-  const calculateTotalAmount = () => {
-    return transactions.reduce((total, tx) => total + Number(tx.amount), 0).toFixed(2);
+  const formatAmount = (amount) => {
+    if (amount >= 1000000) {
+      return (amount / 1000000).toFixed(1) + ' M';
+    } else if (amount >= 1000) {
+      return (amount / 1000).toFixed(1) + ' K';
+    } else {
+      return amount.toFixed(2);
+    }
   };
+
+  const calculateTotalAmount = () => {
+    const totalAmount = transactions.reduce((total, tx) => total + Number(tx.amount), 0);
+    return formatAmount(totalAmount);
+  };
+
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     const id = user?.receiveAddress;

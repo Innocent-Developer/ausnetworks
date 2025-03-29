@@ -12,7 +12,7 @@ const Wallet = () => {
   const [totalBalance, setTotalBalance] = useState(0);
   const [expandedTransactionId, setExpandedTransactionId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [showReceiverCard, setShowReceiverCard] = useState(false);
+
   const [receiverAddress, setReceiverAddress] = useState("");
   const [amount, setAmount] = useState(""); // New state for amount
   const [activeTab, setActiveTab] = useState("all");
@@ -122,6 +122,8 @@ const Wallet = () => {
   const handleSendClick = () => {
     setShowSendPopup(true);
     // Add scan QR code functionality here
+    setReceiverAddress("")
+    setAmount("")
     toast.info("Scan QR code functionality coming soon!");
   };
 
@@ -172,7 +174,7 @@ const Wallet = () => {
   const copyToClipboard = () => {
     navigator.clipboard.writeText(receiverAddress);
     toast.success("Receiver address copied to clipboard!");
-    setShowReceiverCard(false);
+    setShowPopup(false);
   };
   const popUp = () => {
     toast.info("Coming Soon!");
@@ -195,13 +197,25 @@ const Wallet = () => {
     filteredTransactions.length / transactionsPerPage
   );
 
+  const formatBalance = (balance) => {
+    if (balance >= 1000000000) {
+      return (balance / 1000000000).toFixed(1) + " B";
+    } else if (balance >= 1000000) {
+      return (balance / 1000000).toFixed(1) + " M";
+    } else if (balance >= 1000) {
+      return (balance / 1000).toFixed(1) + " K";
+    } else {
+      return balance.toString();
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-5">
-      <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-md md:max-w-2xl lg:max-w-4xl">
+      <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-md md:max-w-2xl lg-max-w-4xl">
         <h2 className="text-3xl font-bold text-gray-900 text-center">Wallet</h2>
         <p className="text-center text-gray-500">Total Balance</p>
         <h3 className="text-4xl font-semibold text-gray-800 text-center my-2">
-          {Math.round(totalBalance)} AUSC
+          {formatBalance(Math.round(totalBalance))} AUSC
         </h3>
 
         <div className="grid grid-cols-2 gap-4 my-4">
@@ -238,6 +252,7 @@ const Wallet = () => {
         </div>
 
         {showSendPopup && (
+
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white p-6 rounded-xl shadow-2xl w-96 border border-gray-300">
               <h4 className="text-xl font-semibold text-indigo-700">
@@ -263,16 +278,46 @@ const Wallet = () => {
                 <div className="flex justify-end space-x-2">
                   <button
                     type="submit"
-                    className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-2 px-5 rounded-lg shadow-md hover:opacity-90"
+                    className="bg-indigo-600 text-white py-2 px-5 rounded-full shadow-lg hover:bg-indigo-700 transition duration-300"
                   >
                     Send
                   </button>
                   <button
                     type="button"
                     onClick={() => setShowSendPopup(false)}
-                    className="bg-gray-300 text-black py-2 px-5 rounded-lg shadow-md hover:bg-gray-400"
+                    className="bg-gray-400 text-white py-2 px-5 rounded-full shadow-lg hover:bg-gray-500 transition duration-300"
                   >
                     Cancel
+                  </button>
+                </div>
+                <div className="flex justify-end space-x-2">
+                  <button
+                    type="button"
+                    onClick={() => setAmount((totalBalance * 0.25 * 0.9).toFixed(2))}
+                    className="bg-blue-600 text-white py-2 px-4 rounded-full shadow-lg hover:bg-blue-700 transition duration-300"
+                  >
+                    25%
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setAmount((totalBalance * 0.50 * 0.9).toFixed(2))}
+                    className="bg-blue-600 text-white py-2 px-4 rounded-full shadow-lg hover:bg-blue-700 transition duration-300"
+                  >
+                    50%
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setAmount((totalBalance * 0.75 * 0.9).toFixed(2))}
+                    className="bg-blue-600 text-white py-2 px-4 rounded-full shadow-lg hover:bg-blue-700 transition duration-300"
+                  >
+                    75%
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setAmount((totalBalance * 0.9).toFixed(2))}
+                    className="bg-blue-600 text-white py-2 px-4 rounded-full shadow-lg hover:bg-blue-700 transition duration-300"
+                  >
+                    100%
                   </button>
                 </div>
               </form>

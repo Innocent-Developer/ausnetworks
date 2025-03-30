@@ -41,7 +41,8 @@ const Login = () => {
       });
 
       const data = await response.json();
-      console.log(data.user);
+      // console.log(data.user);
+      toast.success("Login successful!");
 
       if (response.ok) {
         // Calculate token expiry (7 days from now)

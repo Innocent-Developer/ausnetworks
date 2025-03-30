@@ -89,7 +89,9 @@ const Wallet = () => {
       );
       if (!response.ok) throw new Error("Failed to fetch sender transactions");
       const data = await response.json();
-      setTransactions(data); // Set transactions to only sender transactions
+      // Remove GassFee from the data
+      const filteredData = data.map(({ GassFee, ...rest }) => rest);
+      setTransactions(filteredData); // Set transactions to only sender transactions
     } catch (error) {
       toast.error("Error fetching sender transactions: " + error.message);
     } finally {
@@ -145,13 +147,17 @@ const Wallet = () => {
       if (!response.ok) throw new Error("Failed to send coins");
       const data = await response.json();
 
-      if (data.transactionResult.status === "failed") {
-        toast.error("Error sending coins: " + data.transactionResult.message);
-      } else if (data.transactionResult.status === "completed") {
+      toast.success(data.transactionResult.message);
+      //  toaster  
+      if(data.transactionResult.message ==="Transfer completed successfully and notifications sent"){
         toast.success(`Successfully sent ${amount} AUSC to ${receiverAddress}`);
         await fetchUserTransactions(user.receiveAddress);
         await fetchSenderTransactions(user.senderAddress);
+        window.location.reload(); // Refresh the page 
+      } else {
+        toast.error("Error sending coins: " + (data.transactionResult ? data.transactionResult.message : "Unknown error"));
       }
+
     } catch (error) {
       toast.error("Error sending coins: " + error.message);
     } finally {
@@ -215,7 +221,7 @@ const Wallet = () => {
         <h2 className="text-3xl font-bold text-gray-900 text-center">Wallet</h2>
         <p className="text-center text-gray-500">Total Balance</p>
         <h3 className="text-4xl font-semibold text-gray-800 text-center my-2">
-          {formatBalance(Math.round(totalBalance))} AUSC
+          {formatBalance(Math.round(totalBalance))} <strong className="text-green-600">AUSC</strong> 
         </h3>
 
         <div className="grid grid-cols-2 gap-4 my-4">
@@ -412,7 +418,14 @@ const Wallet = () => {
                             : "text-red-600 font-semibold"
                         }
                       >
-                        {tx.amount} AUSC
+                        {tx.amount >= 1000000000
+                          ? (tx.amount / 1000000000).toFixed(1) + " B"
+                          : tx.amount >= 1000000
+                          ? (tx.amount / 1000000).toFixed(1) + " M"
+                          : tx.amount >= 1000
+                          ? (tx.amount / 1000).toFixed(1) + " K"
+                          : tx.amount} 
+                        <strong className="text-green-600 ml-2">AUSC</strong>
                         {tx.receiverAddress === user.receiveAddress ? (
                           <span
                             className="ml-2 text-green-600"
@@ -443,7 +456,15 @@ const Wallet = () => {
                           <strong>Sender Address:</strong> {tx.senderAddress}
                         </p>
                         <p>
-                          <strong>Amount:</strong> {tx.amount} AUSC
+                          <strong className="text-green-600 mr-2">Amount:</strong> 
+                          {tx.amount >= 1000000000
+                            ? (tx.amount / 1000000000).toFixed(1) + " B"
+                            : tx.amount >= 1000000
+                            ? (tx.amount / 1000000).toFixed(1) + " M"
+                            : tx.amount >= 10000
+                            ? (tx.amount / 1000).toFixed(1) + " K"
+                            : tx.amount} 
+                          AUSC
                         </p>
                         <p>
                           <strong>Gas Fee:</strong> {tx.GassFee} AUSC

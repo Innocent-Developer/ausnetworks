@@ -464,7 +464,7 @@ const Wallet = () => {
                             : tx.amount >= 10000
                             ? (tx.amount / 1000).toFixed(1) + " K"
                             : tx.amount} 
-                          AUSC
+                          <strong className="ml-2">AUSC</strong>
                         </p>
                         <p>
                           <strong>Gas Fee:</strong> {tx.GassFee} AUSC

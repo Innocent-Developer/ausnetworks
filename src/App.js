@@ -9,6 +9,7 @@ import Login from "./Pages/Login";
 import Wallet from "./Pages/Wallet";
 import Signup from "./Pages/Signup";
 import { ToastContainer } from "react-toastify";
+import SignupbyReferall from "./Pages/signupbyreferallcode";
 function App() {
   return (
 
@@ -17,12 +18,12 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
-        {/* <Route path="/mining" element={<MiningPage />} />
-        <Route path="/wallet" element={<WalletPage />} /> */}
         <Route path="/transaction" element={<LatestTransaction />} />
         <Route path="/login" element={<Login />} /> 
         <Route path="/signup" element={<Signup />} />
         <Route path="/wallet" element={<Wallet />} />
+        <Route path="/signup-rc-new/:id" element={<SignupbyReferall />} />
+
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

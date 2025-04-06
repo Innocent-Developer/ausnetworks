@@ -10,6 +10,11 @@ import Wallet from "./Pages/Wallet";
 import Signup from "./Pages/Signup";
 import { ToastContainer } from "react-toastify";
 import SignupbyReferall from "./Pages/signupbyreferallcode";
+import AOS from 'aos';
+import 'aos/dist/aos.css'; 
+
+  
+AOS.init();
 function App() {
   return (
 

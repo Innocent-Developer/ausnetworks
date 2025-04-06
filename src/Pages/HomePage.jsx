@@ -7,10 +7,16 @@ const HomePage = () => {
       <section className="relative h-screen flex items-center">
         <div className="absolute inset-0">
           <div className="bg-gradient-to-br from-blue-900 to-purple-900 opacity-90 absolute inset-0"></div>
-          <div className="absolute inset-0 bg-[url('https://plus.unsplash.com/premium_photo-1682310075673-b408eb1ca6fd?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8dHJhZGluZ3xlbnwwfHwwfHx8MA%3D%3D')] bg-cover bg-center mix-blend-overlay"></div>
+          <div
+            data-aos="zoom-in"
+            className="absolute inset-0 bg-[url('https://plus.unsplash.com/premium_photo-1682310075673-b408eb1ca6fd?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8dHJhZGluZ3xlbnwwfHwwfHx8MA%3D%3D')] bg-cover bg-center mix-blend-overlay"
+          ></div>
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+          className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+          data-aos="fade-right"
+        >
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6 animate-fade-in-down">
               Welcome to A-U-S Networks
@@ -21,10 +27,18 @@ const HomePage = () => {
               technology and innovative solutions.
             </p>
             <div className="flex justify-center space-x-4">
-              <button className="bg-indigo-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition-colors duration-300 transform hover:scale-105">
+              <button
+                data-aos="fade-up"
+                data-aos-anchor-placement="bottom-bottom"
+                className="bg-indigo-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition-colors duration-300 transform hover:scale-105"
+              >
                 Get Started
               </button>
-              <button className="border-2 border-white text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-white hover:text-gray-900 transition-all duration-300 transform hover:scale-105">
+              <button
+                data-aos="fade-up"
+                data-aos-anchor-placement="bottom-bottom"
+                className="border-2 border-white text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-white hover:text-gray-900 transition-all duration-300 transform hover:scale-105"
+              >
                 Learn More
               </button>
             </div>
@@ -34,7 +48,10 @@ const HomePage = () => {
 
       {/* Features Section */}
       <section className="py-20 bg-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+          data-aos="fade-up-right"
+        >
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
               Why Choose Us?
@@ -48,7 +65,10 @@ const HomePage = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Feature 1 */}
-            <div className="bg-gray-700 p-8 rounded-xl transform hover:scale-105 transition-transform duration-300">
+            <div
+              className="bg-gray-700 p-8 rounded-xl transform hover:scale-105 transition-transform duration-300"
+              data-aos="fade-down-right"
+            >
               <div className="text-indigo-500 mb-4">
                 <svg
                   className="w-12 h-12"
@@ -76,7 +96,10 @@ const HomePage = () => {
             </div>
 
             {/* Feature 2 */}
-            <div className="bg-gray-700 p-8 rounded-xl transform hover:scale-105 transition-transform duration-300">
+            <div
+              className="bg-gray-700 p-8 rounded-xl transform hover:scale-105 transition-transform duration-300"
+              data-aos="fade-down-right"
+            >
               <div className="text-indigo-500 mb-4">
                 <svg
                   className="w-12 h-12"
@@ -103,7 +126,10 @@ const HomePage = () => {
             </div>
 
             {/* Feature 3 */}
-            <div className="bg-gray-700 p-8 rounded-xl transform hover:scale-105 transition-transform duration-300">
+            <div
+              className="bg-gray-700 p-8 rounded-xl transform hover:scale-105 transition-transform duration-300"
+              data-aos="fade-down-right"
+            >
               <div className="text-indigo-500 mb-4">
                 <svg
                   className="w-12 h-12"
@@ -136,22 +162,22 @@ const HomePage = () => {
       <section className="py-20 bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
-            <div className="p-6">
+            <div className="p-6" data-aos="flip-left">
               <p className="text-4xl font-bold text-indigo-500 mb-2">$540K</p>
               <p className="text-gray-400"> Trading Volume</p>
               <p className="text-sm text-gray-500 mt-2">Across all markets</p>
             </div>
-            <div className="p-6">
+            <div className="p-6" data-aos="flip-left">
               <p className="text-4xl font-bold text-indigo-500 mb-2">10K+</p>
               <p className="text-gray-400">Active Users</p>
               <p className="text-sm text-gray-500 mt-2">Growing community</p>
             </div>
-            <div className="p-6">
+            <div className="p-6" data-aos="flip-left">
               <p className="text-4xl font-bold text-indigo-500 mb-2">100+</p>
               <p className="text-gray-400">Countries Supported</p>
               <p className="text-sm text-gray-500 mt-2">Global accessibility</p>
             </div>
-            <div className="p-6">
+            <div className="p-6" data-aos="flip-left">
               <p className="text-4xl font-bold text-indigo-500 mb-2">99.9%</p>
               <p className="text-gray-400">Uptime</p>
               <p className="text-sm text-gray-500 mt-2">
@@ -172,7 +198,10 @@ const HomePage = () => {
             Join thousands of satisfied users who have already discovered the
             power of A-U-S Networks
           </p>
-          <NavLink to="/signup" className="bg-white text-gray-900 px-8 py-3 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors duration-300 transform hover:scale-105">
+          <NavLink
+            to="/signup"
+            className="bg-white text-gray-900 px-8 py-3 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors duration-300 transform hover:scale-105"
+          >
             Create Account
           </NavLink>
           <p className="text-sm text-gray-200 mt-4">
@@ -187,7 +216,7 @@ const HomePage = () => {
             Latest News & Updates
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-gray-900 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
+            <div className="bg-gray-900 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300" data-aos="flip-up">
               <img
                 src="https://via.placeholder.com/600x400"
                 alt="News 1"
@@ -213,7 +242,7 @@ const HomePage = () => {
               </div>
             </div>
 
-            <div className="bg-gray-900 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
+            <div className="bg-gray-900 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300" data-aos="flip-up">
               <img
                 src="https://via.placeholder.com/600x400"
                 alt="News 2"
@@ -239,7 +268,7 @@ const HomePage = () => {
               </div>
             </div>
 
-            <div className="bg-gray-900 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
+            <div className="bg-gray-900 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300" data-aos="flip-up">
               <img
                 src="https://via.placeholder.com/600x400"
                 alt="News 3"
@@ -269,7 +298,7 @@ const HomePage = () => {
       </section>
 
       {/* Partners Section */}
-      <section className="py-20 bg-gray-900">
+      <section className="py-20 bg-gray-900" >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-12">
             Trusted by Industry Leaders

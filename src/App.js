@@ -15,6 +15,7 @@ import Signup from "./Pages/Signup";
 import SignupbyReferall from "./Pages/signupbyreferallcode";
 import Miningapp from "./mining-app/miningapp";
 import KYC from "./KYC/kyc";
+import LoginMining from "./mining-app/Login-mining";
 
 AOS.init();
 
@@ -36,6 +37,7 @@ function AppContent() {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/transaction" element={<LatestTransaction />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/login-mining" element={<LoginMining />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/wallet" element={<Wallet />} />
         <Route path="/signup-rc-new/:id" element={<SignupbyReferall />} />

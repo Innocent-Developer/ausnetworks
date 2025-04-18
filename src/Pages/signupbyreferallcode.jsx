@@ -85,7 +85,7 @@ const SignupbyReferall = () => {
             className="w-full border border-gray-300 rounded-md p-3 text-gray-900 focus:ring-2 focus:ring-indigo-500"
             placeholder="Referral Code (Optional)"
             value={referralCode}
-            onChange={(e) => setReferralCode(e.target.value)}
+            readOnly
           />
 
           <button

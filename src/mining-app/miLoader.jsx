@@ -35,7 +35,9 @@ const StyledWrapper = styled.div`
     height: 50px;
     width: 80%;
     margin: auto;
-    padding:20px;
+    // padding: 20px;
+    // border: 2px solid black;
+    // border-radius: 50px;
 
     .loader {
       scale: 3;

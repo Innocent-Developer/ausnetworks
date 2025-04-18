@@ -108,10 +108,11 @@ const MiningDashboard = () => {
   };
   const handleCopyInviteCode = () => {
     const inviteCode = userData?.inviteCode || "No invite code available";
+    const inviteCodelink=`http://localhost:3000/signup-rc-new/${inviteCode}`
 
-    navigator.clipboard.writeText(inviteCode)
+    navigator.clipboard.writeText(inviteCodelink)
       .then(() => {
-        toast.success(`Invite code ${inviteCode} copied to clipboard!`);
+        toast.success(`Invite code ${inviteCodelink} copied to clipboard!`);
       })
       .catch((error) => {
         console.error("Failed to copy invite code:", error);
@@ -124,14 +125,14 @@ const MiningDashboard = () => {
   }
 
   return (
-    <div className="p-4 text-white">
+    <div className="p-4 text-white rounded-lg border border-gray-300 shadow-md">
       <h1 className="text-2xl mb-4">, {userData?.username}</h1>
       <MiLoaders />;
       <div className="flex my-10 justify-between container">
         <button
           onClick={mining}
           disabled={!canMine() || isMining}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 mt-2 rounded disabled:opacity-50"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 mt-2 rounded-full disabled:opacity-50"
         >
           {isMining
             ? "Mining..."
@@ -141,13 +142,13 @@ const MiningDashboard = () => {
         </button>
         <button
           onClick={handleCopyInviteCode}
-          className="mt-4 bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded"
+          className="mt-4 bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded-full"
         >
           Copy Invite Code
         </button>
       </div>
       {timeLeft && (
-        <div className="text-lg mb-4 text-black animate-time-left">
+        <div className="text-lg mb-4 text-black animate-time-left rounded-lg bg-gray-100 p-3 border border-gray-200">
           Time left until next mining: {timeLeft}
         </div>
       )}

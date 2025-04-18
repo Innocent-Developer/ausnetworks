@@ -1,15 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Mnavbar from "./Mnavbar";
 import Miningloader from "./Miningloader";
 
 const Miningapp = () => {
   const [showNews, setShowNews] = useState(true);
-  const storedUser = JSON.parse(localStorage.getItem("user"));
+  const [userData, setUserData] = useState({
+    Fullname: "Guest",
+    totalBalance: 0,
+    totalReferal: 0,
+    pendingBalance: "NA"
+  });
 
-  // Assuming the user object structure is dynamic and can have different keys
-  const totalBalance = storedUser ? parseFloat(storedUser.totalBalance) : 0;
-  const totalReferall = storedUser ? parseFloat(storedUser.totalReferal) : 0;
-  const pendingBalance = storedUser ? storedUser.pendingBalance || "NA" : "NA";
+  // Function to fetch and update user data
+  const fetchUserData = () => {
+    try {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        const parsedUser = JSON.parse(storedUser);
+        setUserData({
+          Fullname: parsedUser.Fullname || "Guest",
+          totalBalance: parseFloat(parsedUser.totalBalance) || 0,
+          totalReferal: parseFloat(parsedUser.totalReferal) || 0,
+          pendingBalance: parsedUser.pendingBalance || "NA"
+        });
+      }
+    } catch (error) {
+      console.error("Error parsing user data:", error);
+    }
+  };
+
+  // Fetch user data on component mount and set up interval for auto-refresh
+  useEffect(() => {
+    fetchUserData();
+    
+    // Set up interval to refresh data every 30 seconds
+    const intervalId = setInterval(fetchUserData, 30000);
+    
+    // Clean up interval on component unmount
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <>
@@ -18,7 +47,7 @@ const Miningapp = () => {
       <div>
         <div className="text-center my-4">
           <h1 className="text-2xl md:text-xl font-bold">
-            Welcome, {storedUser ? storedUser.Fullname : "Guest"}!
+            Welcome, {userData.Fullname}!
           </h1>
         </div>
       </div>
@@ -26,22 +55,22 @@ const Miningapp = () => {
         <div className="bg-white shadow-md rounded-lg p-2 flex-1 transition-transform duration-300 hover:scale-105 hover:shadow-lg border-b-2 border-gray-300">
           <h2 className="text-lg font-bold">Total Balance</h2>
           <p className="text-xl">
-            {totalBalance >= 1e9
-              ? (totalBalance / 1e9).toFixed(1) + "B"
-              : totalBalance >= 1e6
-              ? (totalBalance / 1e6).toFixed(1) + "M"
-              : totalBalance >= 1e3
-              ? (totalBalance / 1e3).toFixed(1) + "K"
-              : totalBalance.toFixed(0)}
+            {userData.totalBalance >= 1e9
+              ? (userData.totalBalance / 1e9).toFixed(1) + "B"
+              : userData.totalBalance >= 1e6
+              ? (userData.totalBalance / 1e6).toFixed(1) + "M"
+              : userData.totalBalance >= 1e3
+              ? (userData.totalBalance / 1e3).toFixed(1) + "K"
+              : userData.totalBalance.toFixed(0)}
           </p>
         </div>
         <div className="bg-white shadow-md rounded-lg p-2 flex-1 transition-transform duration-300 hover:scale-105 hover:shadow-lg border-b-2 border-gray-300">
           <h2 className="text-lg font-bold">Total Referral</h2>
-          <p className="text-xl">{totalReferall}</p>
+          <p className="text-xl">{userData.totalReferal}</p>
         </div>
         <div className="bg-white shadow-md rounded-lg p-2 flex-1 transition-transform duration-300 hover:scale-105 hover:shadow-lg border-b-2 border-gray-300">
           <h2 className="text-lg font-bold">Price </h2>
-          <p className="text-xl">${pendingBalance}</p>
+          <p className="text-xl">${userData.pendingBalance}</p>
         </div>
       </div>
       {/* Show latest news */}
@@ -70,7 +99,7 @@ const Miningapp = () => {
       )}
 
       {/* mining buton  */}
-      <Miningloader />
+        <Miningloader />
       
     </>
   );

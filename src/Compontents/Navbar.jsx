@@ -52,7 +52,7 @@ const Navbar = () => {
               About
             </NavLink>
             <NavLink
-              to="/web-app/mining/mobile-app"
+              to="/login-mining"
               onClick={handleNavLinkClick}
               data-aos="fade-right"
               data-aos-offset="300"
@@ -171,7 +171,7 @@ const Navbar = () => {
             About
           </NavLink>
           <NavLink
-            to="/web-app/mining/mobile-app"
+            to="/login-mining"
             data-aos="fade-right"
             data-aos-offset="300"
             data-aos-easing="ease-in-sine"

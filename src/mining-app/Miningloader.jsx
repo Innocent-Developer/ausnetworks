@@ -108,7 +108,7 @@ const MiningDashboard = () => {
   };
   const handleCopyInviteCode = () => {
     const inviteCode = userData?.inviteCode || "No invite code available";
-    const inviteCodelink=`http://localhost:3000/signup-rc-new/${inviteCode}`
+    const inviteCodelink=`https://aus-networks.vercel.app/signup-rc-new/${inviteCode}`
 
     navigator.clipboard.writeText(inviteCodelink)
       .then(() => {

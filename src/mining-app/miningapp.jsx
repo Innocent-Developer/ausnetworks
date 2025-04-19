@@ -14,15 +14,21 @@ const Miningapp = () => {
   // Function to fetch and update user data
   const fetchUserData = () => {
     try {
-      const storedUser = localStorage.getItem("user");
-      if (storedUser) {
-        const parsedUser = JSON.parse(storedUser);
-        setUserData({
-          Fullname: parsedUser.Fullname || "Guest",
-          totalBalance: parseFloat(parsedUser.totalBalance) || 0,
-          totalReferal: parseFloat(parsedUser.totalReferal) || 0,
-          pendingBalance: parsedUser.pendingBalance || "NA"
-        });
+      const storedUser = localStorage.getItem("mininguser");
+      const token = localStorage.getItem("miningtoken");
+      const tokenExpiry = localStorage.getItem("miningtokenExpiry");
+      
+      if (storedUser && token && tokenExpiry) {
+        // Check if token is still valid
+        if (new Date().getTime() <= parseInt(tokenExpiry)) {
+          const parsedUser = JSON.parse(storedUser);
+          setUserData({
+            Fullname: parsedUser.Fullname || parsedUser.username || "Guest",
+            totalBalance: parseFloat(parsedUser.totalBalance) || 0,
+            totalReferal: parseFloat(parsedUser.totalReferal) || 0,
+            pendingBalance: parsedUser.pendingBalance || "NA"
+          });
+        }
       }
     } catch (error) {
       console.error("Error parsing user data:", error);

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import styled from 'styled-components';
 
 const LoginMining = () => {
   const [email, setEmail] = useState('');
@@ -11,8 +12,8 @@ const LoginMining = () => {
 
   useEffect(() => {
     // Check if user is already logged in
-    const token = localStorage.getItem('token');
-    const tokenExpiry = localStorage.getItem('tokenExpiry');
+    const token = localStorage.getItem('mininguser');
+    const tokenExpiry = localStorage.getItem('miningtokenExpiry');
     
     if (token && tokenExpiry) {
       // Check if token has expired
@@ -41,7 +42,6 @@ const LoginMining = () => {
       });
 
       const data = await response.json();
-      // console.log(data.user);
       toast.success("Login successful!");
 
       if (response.ok) {
@@ -49,14 +49,9 @@ const LoginMining = () => {
         const expiryTime = new Date().getTime() + (7 * 24 * 60 * 60 * 1000);
         
         // Store user data, token and expiry time in localStorage
-        localStorage.setItem('user', JSON.stringify(data.user));
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('tokenExpiry', expiryTime.toString());
-        
-        toast.success('Login successful!');
-        // const user = JSON.parse(localStorage.getItem("user"));
-        // const id = user?.id;
-        // console.log(id);
+        localStorage.setItem('mininguser', JSON.stringify(data.user));
+        localStorage.setItem('miningtoken', data.token);
+        localStorage.setItem('miningtokenExpiry', expiryTime.toString());
         navigate(`/web-app/mining/mobile-app`);
       } else {
         toast.error(data.message || 'Login failed');
@@ -69,80 +64,169 @@ const LoginMining = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-gray-800 p-8 rounded-xl shadow-2xl transform transition-all hover:scale-105">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
-            Welcome Back
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-400">
-            Please sign in to your account
-          </p>
-        </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm space-y-4">
-            <div>
-              <label htmlFor="email" className="sr-only">
-                Email address
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                required
-                className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-600 bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent sm:text-sm"
-                placeholder="Email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div>
-              <label htmlFor="password" className="sr-only">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                required
-                className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-600 bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent sm:text-sm"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-          </div>
-          
-          <div>
-            <button
-              type="submit"
-              disabled={loading}
-              className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white ${
-                loading
-                  ? 'bg-indigo-400 cursor-not-allowed'
-                  : 'bg-indigo-600 hover:bg-indigo-700'
-              } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transform transition-all duration-150 hover:scale-105`}
-            >
-              {loading ? (
-                <div className="flex items-center">
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Signing in...
-                </div>
-              ) : (
-                'Sign in'
-              )}
-            </button>
-          </div>
-          <div>
-            <p>Don't have an account? <NavLink to="/signup" className="text-indigo-600 hover:text-indigo-700">Sign Up</NavLink></p>
-          </div>
-        </form>
-      </div>
-    </div>
+    <StyledWrapper>
+      <form className="form" onSubmit={handleSubmit}>
+        <span className="input-span">
+          <label htmlFor="email" className="label">Email</label>
+          <input 
+            type="email" 
+            name="email" 
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </span>
+        <span className="input-span">
+          <label htmlFor="password" className="label">Password</label>
+          <input 
+            type="password" 
+            name="password" 
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </span>
+        <input 
+          className="submit" 
+          type="submit" 
+          value={loading ? "Signing in..." : "Sign in"}
+          disabled={loading}
+        />
+        <span className="span">
+          Don't have an account? <NavLink to="/signup">Sign up</NavLink>
+        </span>
+      </form>
+    </StyledWrapper>
   );
 };
+
+const StyledWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #1a202c, #2d3748);
+  padding: 1rem;
+  
+  .form {
+    --bg-light: #efefef;
+    --bg-dark: #707070;
+    --clr: #58bc82;
+    --clr-alpha: #9c9c9c60;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    max-width: 400px;
+    background: #2d3748;
+    padding: clamp(1rem, 5vw, 2rem);
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    @media (max-width: 480px) {
+      max-width: 100%;
+      border-radius: 0.5rem;
+    }
+  }
+
+  .form .input-span {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .form input[type="email"],
+  .form input[type="password"] {
+    border-radius: 0.5rem;
+    padding: clamp(0.75rem, 3vw, 1rem) clamp(0.5rem, 2vw, 0.75rem);
+    width: 100%;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--clr-alpha);
+    outline: 2px solid var(--bg-dark);
+    color: var(--bg-light);
+    font-size: clamp(14px, 2vw, 16px);
+
+    @media (max-width: 480px) {
+      padding: 0.75rem 0.5rem;
+    }
+  }
+
+  .form input[type="email"]:focus,
+  .form input[type="password"]:focus {
+    outline: 2px solid var(--clr);
+  }
+
+  .label {
+    align-self: flex-start;
+    color: var(--clr);
+    font-weight: 600;
+    font-size: clamp(14px, 2vw, 16px);
+  }
+
+  .form .submit {
+    padding: clamp(0.75rem, 3vw, 1rem) clamp(0.5rem, 2vw, 0.75rem);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 3rem;
+    background-color: var(--bg-dark);
+    color: var(--bg-light);
+    border: none;
+    cursor: pointer;
+    transition: all 300ms;
+    font-weight: 600;
+    font-size: clamp(14px, 2vw, 16px);
+
+    @media (max-width: 480px) {
+      padding: 0.75rem 0.5rem;
+    }
+  }
+
+  .form .submit:hover:not(:disabled) {
+    background-color: var(--clr);
+    color: var(--bg-dark);
+    transform: scale(1.02);
+  }
+
+  .form .submit:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  .span {
+    text-decoration: none;
+    color: var(--bg-light);
+    font-size: clamp(14px, 2vw, 16px);
+    text-align: center;
+  }
+
+  .span a {
+    color: var(--clr);
+    text-decoration: none;
+    margin-left: 0.25rem;
+  }
+
+  .span a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.5rem;
+  }
+
+  @media (max-height: 600px) {
+    padding: 1rem 0;
+    min-height: auto;
+  }
+`;
 
 export default LoginMining;

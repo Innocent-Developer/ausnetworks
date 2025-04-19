@@ -23,6 +23,10 @@ function AppContent() {
   const location = useLocation();
   const hideLayout = 
     location.pathname === "/web-app/mining/mobile-app" || 
+    location.pathname === "/web-app/mining/mobile-app/node" || 
+    location.pathname === "/web-app/mining/mobile-app/chat" || 
+    location.pathname === "/web-app/mining/mobile-app/refferal" || 
+    location.pathname === "/web-app/mining/mobile-app/setting" || 
     location.pathname === "/web-app/mining/mobile-app/kyc";
 
   useEffect(() => {

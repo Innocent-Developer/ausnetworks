@@ -14,18 +14,18 @@ const MiningDashboard = () => {
   useEffect(() => {
     const fetchUserData = () => {
       try {
-        const storedUser = localStorage.getItem("user");
+        const storedUser = localStorage.getItem("mininguser");
         if (storedUser) {
           const parsedUser = JSON.parse(storedUser);
           console.log("User ID:", parsedUser.id);
           setUserData(parsedUser);
           setLastMined(parsedUser.lastMined || null);
         } else {
-          navigate("/");
+          navigate("/login-mining");
         }
       } catch (error) {
         console.error("Error parsing user data:", error);
-        navigate("/");
+        navigate("/login-mining");
       } finally {
         setLoading(false);
       }
@@ -85,7 +85,7 @@ const MiningDashboard = () => {
           lastMined: new Date().toISOString(),
         };
 
-        localStorage.setItem("user", JSON.stringify(updatedUserData));
+        localStorage.setItem("mininguser", JSON.stringify(updatedUserData));
         setUserData(updatedUserData);
         setLastMined(updatedUserData.lastMined);
 
@@ -126,8 +126,8 @@ const MiningDashboard = () => {
 
   return (
     <div className="p-4 text-white rounded-lg border border-gray-300 shadow-md">
-      <h1 className="text-2xl mb-4">, {userData?.username}</h1>
-      <MiLoaders />;
+      <h1 className="text-2xl mb-4">Welcome, {userData?.username}</h1>
+      <MiLoaders />
       <div className="flex my-10 justify-between container">
         <button
           onClick={mining}

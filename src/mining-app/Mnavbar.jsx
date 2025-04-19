@@ -1,16 +1,26 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Mnavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    window.location.href = '/login';
+    // Clear all mining-related localStorage items
+    localStorage.removeItem("mininguser");
+    localStorage.removeItem("miningtoken");
+    localStorage.removeItem("miningtokenExpiry");
+    
+    // Show logout notification
+    toast.success("Logged out successfully");
+    
+    // Redirect to login page
+    navigate('/login-mining');
   };
 
   return (

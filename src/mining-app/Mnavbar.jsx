@@ -62,7 +62,7 @@ const Mnavbar = () => {
               <NavLink to="/web-app/mining/mobile-app" className="block p-2 hover:text-white hover:bg-gray-500 rounded-xl">Home</NavLink>
               <NavLink to="/web-app/mining/mobile-app/node" className="block p-2 hover:text-white hover:bg-gray-500 rounded-xl">Node</NavLink>
               <NavLink to="/web-app/mining/mobile-app/chat" className="block p-2 hover:text-white hover:bg-gray-500 rounded-xl">Chat</NavLink>
-              <NavLink to="/" className="block p-2 hover:text-white hover:bg-gray-500 rounded-xl">Refferal</NavLink>
+              <NavLink to="/web-app/mining/mobile-app/refferal" className="block p-2 hover:text-white hover:bg-gray-500 rounded-xl">Refferal</NavLink>
               <NavLink to="/web-app/mining/mobile-app/kyc" className="block p-2 hover:text-white hover:bg-gray-500 rounded-xl">KYC</NavLink>
               <NavLink to="/" className="block p-2 hover:text-white hover:bg-gray-500 rounded-xl">Settings</NavLink>
               <button className="block p-2 hover:text-white hover:bg-red-500 rounded-xl" onClick={handleLogout}>

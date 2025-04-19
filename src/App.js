@@ -16,6 +16,7 @@ import SignupbyReferall from "./Pages/signupbyreferallcode";
 import Miningapp from "./mining-app/miningapp";
 import KYC from "./KYC/kyc";
 import LoginMining from "./mining-app/Login-mining";
+import ReferralList from "./mining-app/Referalllist";
 
 AOS.init();
 
@@ -46,6 +47,7 @@ function AppContent() {
         <Route path="/wallet" element={<Wallet />} />
         <Route path="/signup-rc-new/:id" element={<SignupbyReferall />} />
         <Route path="/web-app/mining/mobile-app" element={<Miningapp />} />
+        <Route path="/web-app/mining/mobile-app/refferal" element={<ReferralList />} />
         <Route path="/web-app/mining/mobile-app/kyc" element={<KYC />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

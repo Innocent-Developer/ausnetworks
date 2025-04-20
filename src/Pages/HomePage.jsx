@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import Supplypage from "./Supplypage";
 const HomePage = () => {
   return (
     <div className="min-h-screen bg-gray-900">
@@ -187,6 +188,8 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+      {/* Testimonials Section */}
+     <Supplypage />
 
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-indigo-600 to-purple-600">
@@ -234,7 +237,7 @@ const HomePage = () => {
                   with improved efficiency and lower fees.
                 </p>
                 <a
-                  href="#"
+                  href="/"
                   className="text-indigo-400 hover:text-indigo-300 font-medium"
                 >
                   Read More →
@@ -260,7 +263,7 @@ const HomePage = () => {
                   protection for our users' assets.
                 </p>
                 <a
-                  href="#"
+                  href="/"
                   className="text-indigo-400 hover:text-indigo-300 font-medium"
                 >
                   Read More →
@@ -286,7 +289,7 @@ const HomePage = () => {
                   features and improvements.
                 </p>
                 <a
-                  href="#"
+                  href="/"
                   className="text-indigo-400 hover:text-indigo-300 font-medium"
                 >
                   Read More →

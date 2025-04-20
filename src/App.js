@@ -18,6 +18,7 @@ import KYC from "./KYC/kyc";
 import LoginMining from "./mining-app/Login-mining";
 import ReferralList from "./mining-app/Referalllist";
 import MiningWallet from "./mining-app/Miningwallet";
+import ChartPage from "./Pages/Chartpage";
 
 AOS.init();
 
@@ -47,6 +48,7 @@ function AppContent() {
         <Route path="/login-mining" element={<LoginMining />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/wallet" element={<Wallet />} />
+        <Route path="/live-chart/ausdc-usdt" element={<ChartPage />} />
         <Route path="/web-app/mining/mobile-app/wallet" element={<MiningWallet />} />
         <Route path="/signup-rc-new/:id" element={<SignupbyReferall />} />
         <Route path="/web-app/mining/mobile-app" element={<Miningapp />} />

@@ -4,130 +4,61 @@ import { NavLink } from "react-router-dom";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const handleNavLinkClick = () => {
-    setIsOpen(false); // Close the menu when a NavLink is clicked
-  };
+  const toggleMenu = () => setIsOpen(!isOpen);
+  const handleNavLinkClick = () => setIsOpen(false);
 
   return (
-    <nav className="bg-gradient-to-r from-gray-800 to-gray-900 shadow-lg relative z-50">
+    <nav className="bg-gradient-to-r from-[#0f0f0f] to-[#1c1c1c] shadow-lg border-b border-gray-800 z-50 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
-          {/* Logo/Brand */}
-          <div className="flex-shrink-0 flex items-center" data-aos="zoom-in">
-            <a
-              href="/"
-              className="text-2xl font-bold text-white hover:scale-105 transition-transform duration-200"
-            >
-              A-U-S Networks
+          {/* Logo */}
+          <div className="flex items-center">
+            <a href="/" className="text-2xl font-bold text-white tracking-wide">
+              A-U-S <span className="text-blue-500">Networks</span>
             </a>
           </div>
 
           {/* Desktop Menu */}
-          <div
-            className="hidden md:flex items-center space-x-8"
-            data-aos="zoom-in-down"
-          >
-            <NavLink
-              to="/"
-              onClick={handleNavLinkClick}
-              data-aos="fade-right"
-              data-aos-offset="300"
-              data-aos-easing="ease-in-sine"
-              className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200"
-            >
-              Home
-            </NavLink>
-            <NavLink
-              to="/about"
-              onClick={handleNavLinkClick}
-              data-aos="fade-right"
-              data-aos-offset="300"
-              data-aos-easing="ease-in-sine"
-              className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200"
-            >
-              About
-            </NavLink>
-            <NavLink
-              to="/login-mining"
-              onClick={handleNavLinkClick}
-              data-aos="fade-right"
-              data-aos-offset="300"
-              data-aos-easing="ease-in-sine"
-              className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200"
-            >
-              Mining
-            </NavLink>
-            <NavLink
-              to="/login"
-              onClick={handleNavLinkClick}
-              data-aos="fade-right"
-              data-aos-offset="300"
-              data-aos-easing="ease-in-sine"
-              className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200"
-            >
-              Wallet
-            </NavLink>
-            <NavLink
-              to="/transaction"
-              onClick={handleNavLinkClick}
-              data-aos="fade-right"
-              data-aos-offset="300"
-              data-aos-easing="ease-in-sine"
-              className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200"
-            >
-              Latest Transaction
-            </NavLink>
+          <div className="hidden md:flex space-x-8 items-center">
+            {[
+              { to: "/", label: "Home" },
+              { to: "/about", label: "About" },
+              { to: "/login-mining", label: "Mining" },
+              { to: "/login", label: "Wallet" },
+              { to: "/transaction", label: "Latest Transaction" },
+            ].map((link) => (
+              <NavLink
+                key={link.to}
+                to={link.to}
+                onClick={handleNavLinkClick}
+                className="text-gray-300 hover:text-blue-500 transition duration-300 text-sm font-medium"
+              >
+                {link.label}
+              </NavLink>
+            ))}
+
             <NavLink
               to="/contact"
               onClick={handleNavLinkClick}
-              data-aos="fade-right"
-              data-aos-offset="300"
-              data-aos-easing="ease-in-sine"
-              className="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 transition-all duration-200"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm transition duration-300"
             >
               Contact
             </NavLink>
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center">
+          {/* Mobile Toggle */}
+          <div className="md:hidden">
             <button
               onClick={toggleMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-300 hover:text-white focus:outline-none transition-transform duration-200 hover:scale-110"
+              className="text-gray-300 hover:text-white focus:outline-none"
             >
               {isOpen ? (
-                <svg
-                  className="h-6 w-6"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
+                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               ) : (
-                <svg
-                  className="h-6 w-6"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
+                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               )}
             </button>
@@ -135,78 +66,39 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu Overlay */}
+      {/* Overlay */}
       {isOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
-          onClick={toggleMenu}
-        ></div>
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden" onClick={toggleMenu}></div>
       )}
 
-      {/* Sidebar Menu */}
+      {/* Mobile Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 w-64 bg-gray-900 transform ${
+        className={`fixed inset-y-0 left-0 w-64 bg-[#111] transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 ease-in-out md:hidden z-50`}
       >
-        <div className="p-5 space-y-4">
-          <NavLink
-            to="/"
-            data-aos="fade-right"
-            data-aos-offset="300"
-            data-aos-easing="ease-in-sine"
-            className="block text-white text-lg"
-            onClick={handleNavLinkClick}
-          >
-            Home
-          </NavLink>
-          <NavLink
-            to="/about"
-            data-aos="fade-right"
-            data-aos-offset="300"
-            data-aos-easing="ease-in-sine"
-            className="block text-white text-lg"
-            onClick={handleNavLinkClick}
-          >
-            About
-          </NavLink>
-          <NavLink
-            to="/login-mining"
-            data-aos="fade-right"
-            data-aos-offset="300"
-            data-aos-easing="ease-in-sine"
-            className="block text-white text-lg"
-            onClick={handleNavLinkClick}
-          >
-            Mining
-          </NavLink>
-          <NavLink
-            to="/login"
-            data-aos="fade-right"
-            data-aos-offset="300"
-            data-aos-easing="ease-in-sine"
-            className="block text-white text-lg"
-            onClick={handleNavLinkClick}
-          >
-            Wallet
-          </NavLink>
-          <NavLink
-            to="/transaction"
-            data-aos="fade-right"
-            data-aos-offset="300"
-            data-aos-easing="ease-in-sine"
-            className="block text-white text-lg"
-            onClick={handleNavLinkClick}
-          >
-            Latest Transaction
-          </NavLink>
+        <div className="p-6 space-y-4">
+          {[
+            { to: "/", label: "Home" },
+            { to: "/about", label: "About" },
+            { to: "/login-mining", label: "Mining" },
+            { to: "/login", label: "Wallet" },
+            { to: "/transaction", label: "Latest Transaction" },
+          ].map((link) => (
+            <NavLink
+              key={link.to}
+              to={link.to}
+              onClick={handleNavLinkClick}
+              className="block text-gray-200 hover:text-blue-500 text-lg transition duration-200"
+            >
+              {link.label}
+            </NavLink>
+          ))}
+
           <NavLink
             to="/contact"
-            data-aos="fade-right"
-            data-aos-offset="300"
-            data-aos-easing="ease-in-sine"
-            className="block text-white text-lg bg-indigo-600 px-4 py-2 rounded-md"
             onClick={handleNavLinkClick}
+            className="block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-lg mt-4"
           >
             Contact
           </NavLink>

@@ -218,7 +218,7 @@ const HomePage = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-gray-900 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300" data-aos="flip-up">
               <img
-                src="https://via.placeholder.com/600x400"
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSakAf24_MOcXE3zbYAF9yAI0spbkxrv421ew&s"
                 alt="News 1"
                 className="w-full h-48 object-cover"
               />
@@ -244,7 +244,7 @@ const HomePage = () => {
 
             <div className="bg-gray-900 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300" data-aos="flip-up">
               <img
-                src="https://via.placeholder.com/600x400"
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdNZLvnKGRKKtHbxu5laF3XzD1FAbNo4vdjQ&s"
                 alt="News 2"
                 className="w-full h-48 object-cover"
               />
@@ -270,7 +270,7 @@ const HomePage = () => {
 
             <div className="bg-gray-900 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300" data-aos="flip-up">
               <img
-                src="https://via.placeholder.com/600x400"
+                src="https://t3.ftcdn.net/jpg/08/18/29/44/360_F_818294473_1nErAwOPZyaFgIotBNceZXFvRr62COHG.jpg"
                 alt="News 3"
                 className="w-full h-48 object-cover"
               />

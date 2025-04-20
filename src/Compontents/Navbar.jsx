@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,7 +25,7 @@ const Navbar = () => {
               { to: "/", label: "Home" },
               { to: "/about", label: "About" },
               { to: "/login-mining", label: "Mining" },
-              { to: "/login", label: "Wallet" },
+              // { to: "/login", label: "Wallet" },
               { to: "/transaction", label: "Latest Transaction" },
             ].map((link) => (
               <NavLink
@@ -68,7 +69,10 @@ const Navbar = () => {
 
       {/* Overlay */}
       {isOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden" onClick={toggleMenu}></div>
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+          onClick={toggleMenu}
+        ></div>
       )}
 
       {/* Mobile Sidebar */}
@@ -77,19 +81,19 @@ const Navbar = () => {
           isOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 ease-in-out md:hidden z-50`}
       >
-        <div className="p-6 space-y-4">
+        <div className="p-6 space-y-4 ">
           {[
             { to: "/", label: "Home" },
             { to: "/about", label: "About" },
             { to: "/login-mining", label: "Mining" },
-            { to: "/login", label: "Wallet" },
+            // { to: "/login", label: "Wallet" },
             { to: "/transaction", label: "Latest Transaction" },
           ].map((link) => (
             <NavLink
               key={link.to}
               to={link.to}
               onClick={handleNavLinkClick}
-              className="block text-gray-200 hover:text-blue-500 text-lg transition duration-200"
+              className="block text-gray-200 gap-2 hover:text-blue-500 text-lg transition duration-200"
             >
               {link.label}
             </NavLink>
@@ -102,6 +106,34 @@ const Navbar = () => {
           >
             Contact
           </NavLink>
+
+          {/* Social Icons - only mobile */}
+          <div className="flex space-x-4 mt-8 text-white text-xl">
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-blue-500"
+            >
+              <FaFacebookF />
+            </a>
+            <a
+              href="https://twitter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-blue-400"
+            >
+              <FaTwitter />
+            </a>
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-pink-500"
+            >
+              <FaInstagram />
+            </a>
+          </div>
         </div>
       </div>
     </nav>

@@ -112,7 +112,7 @@ const Miningapp = () => {
   return (
     <StyledWrapper>
       <div className="container">
-        <Mnavbar />
+      <Mnavbar />
         <div className="welcome-text">
           <h1>Welcome, {userData.Fullname}!</h1>
         </div>
@@ -179,7 +179,27 @@ const StyledWrapper = styled.div`
   }
 
   .welcome-text {
+    @media (max-width: 768px) {
+  .welcome-text {
     text-align: center;
+    margin: 10px 0;
+    
+    h1 {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .welcome-text {
+    text-align: center;
+    margin: 5px 0;
+    
+    h1 {
+      font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+    }
+  }
+}
     margin: 20px 0;
     
     h1 {
@@ -297,7 +317,8 @@ const StyledWrapper = styled.div`
 
   @media (max-width: 480px) {
     .stats-container {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, 1fr); /* ✅ Two boxes in one row */
+      gap: 10px;
     }
 
     .stat-card {

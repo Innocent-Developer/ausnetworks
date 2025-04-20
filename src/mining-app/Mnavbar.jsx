@@ -58,11 +58,12 @@ const Mnavbar = () => {
           {/* Sidebar */}
           <div className="md:hidden bg-gray-300 p-4 fixed left-0 top-0 h-full w-64 shadow-lg z-50">
             <div className="text-2xl font-bold">AUS-MINING</div>
-            <div className="flex flex-col space-y-4 p-4 pt-12 gap-2">
+            <div className="flex flex-col space-y-4 p-4 pt-12 gap-1">
               <NavLink to="/web-app/mining/mobile-app" className="block p-2 hover:text-white hover:bg-gray-500 rounded-xl">Home</NavLink>
               <NavLink to="/web-app/mining/mobile-app/node" className="block p-2 hover:text-white hover:bg-gray-500 rounded-xl">Node</NavLink>
               <NavLink to="/web-app/mining/mobile-app/chat" className="block p-2 hover:text-white hover:bg-gray-500 rounded-xl">Chat</NavLink>
               <NavLink to="/web-app/mining/mobile-app/refferal" className="block p-2 hover:text-white hover:bg-gray-500 rounded-xl">Refferal</NavLink>
+              <NavLink to="wallet" className="block p-2 hover:text-white hover:bg-gray-500 rounded-xl">wallet</NavLink>
               <NavLink to="/web-app/mining/mobile-app/kyc" className="block p-2 hover:text-white hover:bg-gray-500 rounded-xl">KYC</NavLink>
               <NavLink to="/" className="block p-2 hover:text-white hover:bg-gray-500 rounded-xl">Settings</NavLink>
               <button className="block p-2 hover:text-white hover:bg-red-500 rounded-xl" onClick={handleLogout}>

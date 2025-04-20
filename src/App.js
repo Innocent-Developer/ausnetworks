@@ -17,6 +17,7 @@ import Miningapp from "./mining-app/miningapp";
 import KYC from "./KYC/kyc";
 import LoginMining from "./mining-app/Login-mining";
 import ReferralList from "./mining-app/Referalllist";
+import MiningWallet from "./mining-app/Miningwallet";
 
 AOS.init();
 
@@ -28,6 +29,7 @@ function AppContent() {
     location.pathname === "/web-app/mining/mobile-app/chat" || 
     location.pathname === "/web-app/mining/mobile-app/refferal" || 
     location.pathname === "/web-app/mining/mobile-app/setting" || 
+    location.pathname === "/web-app/mining/mobile-app/wallet" || 
     location.pathname === "/web-app/mining/mobile-app/kyc";
 
   useEffect(() => {
@@ -45,6 +47,7 @@ function AppContent() {
         <Route path="/login-mining" element={<LoginMining />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/wallet" element={<Wallet />} />
+        <Route path="/web-app/mining/mobile-app/wallet" element={<MiningWallet />} />
         <Route path="/signup-rc-new/:id" element={<SignupbyReferall />} />
         <Route path="/web-app/mining/mobile-app" element={<Miningapp />} />
         <Route path="/web-app/mining/mobile-app/refferal" element={<ReferralList />} />

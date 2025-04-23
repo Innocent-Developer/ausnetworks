@@ -19,6 +19,7 @@ import LoginMining from "./mining-app/Login-mining";
 import ReferralList from "./mining-app/Referalllist";
 import MiningWallet from "./mining-app/Miningwallet";
 import ChartPage from "./Pages/Chartpage";
+import StackCoin from "./mining-app/StackPage";
 
 AOS.init();
 
@@ -53,6 +54,7 @@ function AppContent() {
         <Route path="/signup-rc-new/:id" element={<SignupbyReferall />} />
         <Route path="/web-app/mining/mobile-app" element={<Miningapp />} />
         <Route path="/web-app/mining/mobile-app/refferal" element={<ReferralList />} />
+        <Route path="/web-app/mining/mobile-app/stackcoin" element={<StackCoin />} />
         <Route path="/web-app/mining/mobile-app/kyc" element={<KYC />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

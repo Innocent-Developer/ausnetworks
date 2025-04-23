@@ -1,6 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import Supplypage from "./Supplypage";
+import RoadMap from "./RoadMap";
 const HomePage = () => {
   return (
     <div className="min-h-screen bg-gray-900">
@@ -299,6 +300,8 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+      {/* RoadMAp */}
+      <RoadMap />
 
       {/* Partners Section */}
       <section className="py-20 bg-gray-900" >
@@ -316,21 +319,21 @@ const HomePage = () => {
             </div>
             <div className="flex justify-center">
               <img
-                src="https://via.placeholder.com/200x80"
+                src="https://onesolution-beta.vercel.app/img/logo.png"
                 alt="Partner 2"
                 className="h-12 object-contain"
               />
             </div>
             <div className="flex justify-center">
               <img
-                src="https://via.placeholder.com/200x80"
+                src="https://www.onestwork.com/assets/img/home-icons/h-logo.png"
                 alt="Partner 3"
                 className="h-12 object-contain"
               />
             </div>
             <div className="flex justify-center">
               <img
-                src="https://via.placeholder.com/200x80"
+                src="https://pic.surf/rw"
                 alt="Partner 4"
                 className="h-12 object-contain"
               />

@@ -40,11 +40,11 @@ const Footer = () => {
         <div className="border border-gray-700 rounded-t-xl p-6 mb-12 flex flex-col md:flex-row justify-between items-center">
           <h2 className="text-white text-2xl font-bold mb-4 md:mb-0">Join the A-U-S community</h2>
           <div className="flex space-x-4 text-xl text-white">
-            <a href="#"><i className="fab fa-discord" /></a>
-            <a href="#"><i className="fab fa-telegram-plane" /></a>
-            <a href="#"><i className="fab fa-x-twitter" /></a>
-            <a href="#"><i className="fab fa-medium" /></a>
-            <a href="#"><i className="fab fa-reddit-alien" /></a>
+            <a href="https://discord.com" target="_blank" rel="noreferrer"><i className="fab fa-discord" /></a>
+            <a href="https://telegram.org" target="_blank" rel="noreferrer"><i className="fab fa-telegram-plane" /></a>
+            <a href="https://twitter.com" target="_blank" rel="noreferrer"><i className="fab fa-x-twitter" /></a>
+            <a href="https://medium.com" target="_blank" rel="noreferrer"><i className="fab fa-medium" /></a>
+            <a href="https://reddit.com" target="_blank" rel="noreferrer"><i className="fab fa-reddit-alien" /></a>
           </div>
         </div>
 
@@ -53,33 +53,33 @@ const Footer = () => {
           <div>
             <h3 className="text-white font-semibold mb-4">Use Scala</h3>
             <ul className="space-y-2">
-              <li><a href="#" className="hover:text-white">Wallets</a></li>
-              <li><a href="#" className="hover:text-white">Miners</a></li>
-              <li><a href="#" className="hover:text-white">XLA Coin</a></li>
-              <li><a href="#" className="hover:text-white">Get XLA</a></li>
-              <li><a href="#" className="hover:text-white">Scala Share</a></li>
+              <li><a href="/wallets" className="hover:text-white">Wallets</a></li>
+              <li><a href="/miners" className="hover:text-white">Miners</a></li>
+              <li><a href="/xla-coin" className="hover:text-white">XLA Coin</a></li>
+              <li><a href="/get-xla" className="hover:text-white">Get XLA</a></li>
+              <li><a href="/scala-share" className="hover:text-white">Scala Share</a></li>
             </ul>
           </div>
 
           <div>
             <h3 className="text-white font-semibold mb-4">Learn</h3>
             <ul className="space-y-2">
-              <li><a href="#" className="hover:text-white">About</a></li>
-              <li><a href="#" className="hover:text-white">Wiki</a></li>
-              <li><a href="#" className="hover:text-white">Blog</a></li>
-              <li><a href="#" className="hover:text-white">Notary Nodes</a></li>
-              <li><a href="#" className="hover:text-white">Roadmap</a></li>
+              <li><a href="/about" className="hover:text-white">About</a></li>
+              <li><a href="/wiki" className="hover:text-white">Wiki</a></li>
+              <li><a href="/blog" className="hover:text-white">Blog</a></li>
+              <li><a href="/notary-nodes" className="hover:text-white">Notary Nodes</a></li>
+              <li><a href="/roadmap" className="hover:text-white">Roadmap</a></li>
             </ul>
           </div>
 
           <div>
             <h3 className="text-white font-semibold mb-4">Resources</h3>
             <ul className="space-y-2">
-              <li><a href="#" className="hover:text-white">Mining Pools</a></li>
-              <li><a href="#" className="hover:text-white">Statistics</a></li>
-              <li><a href="#" className="hover:text-white">Network Explorer</a></li>
-              <li><a href="#" className="hover:text-white">Brand Assets</a></li>
-              <li><a href="#" className="hover:text-white">Shop</a></li>
+              <li><a href="/mining-pools" className="hover:text-white">Mining Pools</a></li>
+              <li><a href="/statistics" className="hover:text-white">Statistics</a></li>
+              <li><a href="/network-explorer" className="hover:text-white">Network Explorer</a></li>
+              <li><a href="/brand-assets" className="hover:text-white">Brand Assets</a></li>
+              <li><a href="/shop" className="hover:text-white">Shop</a></li>
             </ul>
           </div>
 
@@ -108,10 +108,10 @@ const Footer = () => {
 
         {/* Footer Bottom Bar */}
         <div className="border-t border-gray-700 pt-6 flex flex-col md:flex-row justify-between items-center text-sm">
-          <a href='https://mi-networks.web.app/' target='_blank'>© {new Date().getFullYear()}MI-Networks. All rights reserved.</a>
+          <a href='https://mi-networks.web.app/' target='_blank' rel="noreferrer">© {new Date().getFullYear()}MI-Networks. All rights reserved.</a>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="#" className="hover:text-white">Terms and Conditions</a>
-            <a href="#" className="hover:text-white">Privacy Policy</a>
+            <a href="/terms" className="hover:text-white">Terms and Conditions</a>
+            <a href="/privacy-policy" className="hover:text-white">Privacy Policy</a>
           </div>
         </div>
       </div>

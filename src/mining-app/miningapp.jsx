@@ -107,7 +107,7 @@ const Miningapp = () => {
     fetchUserData();
     const intervalId = setInterval(fetchUserData, 30000);
     return () => clearInterval(intervalId);
-  }, [navigate]);
+  }, [navigate, fetchUserData]);
 
   return (
     <StyledWrapper>

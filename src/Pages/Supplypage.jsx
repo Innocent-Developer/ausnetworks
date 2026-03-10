@@ -70,10 +70,6 @@ export default function TokenomicsPage() {
         >
           {sections.map((section, index) => {
             const color = colors[index - 1] || "#6366f1"; // skip Total Supply
-            const borderStyle =
-              section.label === "Total Supply"
-                ? "border-indigo-500"
-                : "";
 
             return (
               <div
